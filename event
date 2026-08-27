@@ -1,1 +1,1 @@
-{"kind":"roster","text":"planner joins as agent","body":{"actor":"10b27d580f73fe9769e741bb41ef17fdcc5c96b51d60506d2f530f9f6176ea02","kind":"agent","name":"planner","role":"participant"}}
+{"target":"git:sha1:5abaa0f151cd76dcf02a7bd669358ce94b67f4a6#git:sha1:2d4555f420765c442c37a17a9e4e563fc8e062cd"}
