@@ -1,1 +1,1 @@
-{"target":"git:sha1:5abaa0f151cd76dcf02a7bd669358ce94b67f4a6#git:sha1:2d4555f420765c442c37a17a9e4e563fc8e062cd"}
+{"kind":"roster","text":"claude joins as agent","body":{"actor":"f7c5c6aeed6a45cbf531556548bb03becba45d614cd9c44b698e906f154b5e4c","kind":"agent","name":"claude","role":"participant"}}
