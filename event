@@ -1,1 +1,1 @@
-{"target":"git:sha1:5abaa0f151cd76dcf02a7bd669358ce94b67f4a6#git:sha1:7a346e3a0957c910ad18223bfe9a39fadd1e5281"}
+{"kind":"artifact","text":"First standalone inventory candidate artifact: repository-local ignore rules at exact clean pushed head a3ce0fc6d4150a05ec8655340509f06b96a4822f.","body":{"commit":"a3ce0fc6d4150a05ec8655340509f06b96a4822f","path":".gitignore"}}
