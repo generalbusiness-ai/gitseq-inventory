@@ -1,1 +1,1 @@
-{"target":"git:sha1:5abaa0f151cd76dcf02a7bd669358ce94b67f4a6#git:sha1:2c4b57b9769b6e9f362694216d31d5f6e001329b","text":"Retire the later duplicate inventory artifact; the earlier canonical artifact set at the same exact head remains live under review request b607a1d7."}
+{"target":"git:sha1:5abaa0f151cd76dcf02a7bd669358ce94b67f4a6#git:sha1:80f8fc03ab74ebc87a1e6f014b933c05971dfd7f","text":"Retire the later duplicate inventory artifact; the earlier canonical artifact set at the same exact head remains live under review request b607a1d7."}
