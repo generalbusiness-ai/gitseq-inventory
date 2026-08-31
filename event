@@ -1,1 +1,1 @@
-{"kind":"artifact","text":"Standalone inventory application at exact clean pushed head a3ce0fc6d4150a05ec8655340509f06b96a4822f for go.sum; dependency checksums accompany the pinned runtime and full gates passed.","body":{"commit":"a3ce0fc6d4150a05ec8655340509f06b96a4822f","path":"go.sum"}}
+{"kind":"artifact","text":"First standalone inventory candidate artifact: end-to-end standalone inventory instructions and boundary at exact clean pushed head a3ce0fc6d4150a05ec8655340509f06b96a4822f.","body":{"commit":"a3ce0fc6d4150a05ec8655340509f06b96a4822f","path":"README.md"}}
