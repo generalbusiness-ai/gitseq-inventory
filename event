@@ -1,1 +1,1 @@
-{"kind":"artifact","text":"First standalone inventory candidate artifact: repository-local inventory application binding at exact clean pushed head a3ce0fc6d4150a05ec8655340509f06b96a4822f.","body":{"commit":"a3ce0fc6d4150a05ec8655340509f06b96a4822f","path":"application.go"}}
+{"kind":"artifact","text":"First standalone inventory candidate artifact: copied standalone inventory SQL surface at exact clean pushed head a3ce0fc6d4150a05ec8655340509f06b96a4822f.","body":{"commit":"a3ce0fc6d4150a05ec8655340509f06b96a4822f","path":"application.sql"}}
