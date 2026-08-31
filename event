@@ -1,1 +1,1 @@
-{"kind":"artifact","text":"First standalone inventory candidate artifact: pinned inventory fold at exact clean pushed head a3ce0fc6d4150a05ec8655340509f06b96a4822f.","body":{"commit":"a3ce0fc6d4150a05ec8655340509f06b96a4822f","path":"folds/inventory.jsonata"}}
+{"kind":"artifact","text":"First standalone inventory candidate artifact: pinned standalone runtime module definition at exact clean pushed head a3ce0fc6d4150a05ec8655340509f06b96a4822f.","body":{"commit":"a3ce0fc6d4150a05ec8655340509f06b96a4822f","path":"go.mod"}}
