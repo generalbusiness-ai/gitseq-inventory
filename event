@@ -1,1 +1,1 @@
-{"kind":"artifact","text":"First standalone inventory candidate artifact: fixture generator regression coverage at exact clean pushed head a3ce0fc6d4150a05ec8655340509f06b96a4822f.","body":{"commit":"a3ce0fc6d4150a05ec8655340509f06b96a4822f","path":"cmd/inventory-fixture/main_test.go"}}
+{"kind":"artifact","text":"First standalone inventory candidate artifact: standalone inventory command at exact clean pushed head a3ce0fc6d4150a05ec8655340509f06b96a4822f.","body":{"commit":"a3ce0fc6d4150a05ec8655340509f06b96a4822f","path":"cmd/jsonata-inventory/main.go"}}
