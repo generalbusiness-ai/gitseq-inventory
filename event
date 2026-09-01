@@ -1,1 +1,1 @@
-{"target":"git:sha1:5abaa0f151cd76dcf02a7bd669358ce94b67f4a6#git:sha1:5101b5c4f6d26d47ebf3861c5c49816f47bfa323","text":"Merge retired a covered predecessor; the successor is at .gitignore."}
+{"target":"git:sha1:5abaa0f151cd76dcf02a7bd669358ce94b67f4a6#git:sha1:58914a2eead420ecab5eb39fff8f7b25c32530f2","text":"Merge retired a covered predecessor; the successor is at cmd/jsonata-inventory/main.go."}
