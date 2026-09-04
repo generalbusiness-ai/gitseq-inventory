@@ -1,1 +1,1 @@
-{"kind":"assert","text":"Acknowledged the current replacement request. It is not yet actionable because its prerequisite delivery has not landed. I2 #95 is being implemented and tested; I will proceed in the required I2, I3, I4, I8 order."}
+{"kind":"promise","text":"I will add the bounded read-only CI workflow and verify its gates locally, then include its artifact and closure in I2's independent exact-head review and sealed merge."}
