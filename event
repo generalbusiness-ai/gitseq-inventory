@@ -1,1 +1,1 @@
-{"kind":"artifact","text":"Merge published the current artifact at internal/recordruntime/testdata/identity.txt","body":{"commit":"4edd9c98a8db2bb8e6913c73e17e89645f545a8f","path":"internal/recordruntime/testdata/identity.txt"}}
+{"target":"git:sha1:5abaa0f151cd76dcf02a7bd669358ce94b67f4a6#git:sha1:0abf549e69b595d093c5d2a2ec0fc4fad2fe38e5","text":"Merge retired a covered predecessor; the successor is at .github/workflows/ci.yml."}
