@@ -1,1 +1,1 @@
-{"kind":"promise","text":"I will inspect the reproduced malformed-payload cases and the adopted contract, decide the smallest validation boundary that preserves old behavior and frozen inputs, and file a bounded repair assignment before implementation."}
+{"kind":"promise","text":"I will verify the scalar-JSON affinity failure, arrange a bounded upstream shared-core repair and release with conformance evidence, and specify the inventory adoption gate without replacing the core codec locally."}
