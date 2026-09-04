@@ -1,1 +1,1 @@
-{"target":"git:sha1:5abaa0f151cd76dcf02a7bd669358ce94b67f4a6#git:sha1:434d09e50a3e50ab72000148673be2f48d5ed008","text":"Merge retired a covered predecessor; the successor is at internal/recordruntime/testdata/input-bound.json."}
+{"target":"git:sha1:5abaa0f151cd76dcf02a7bd669358ce94b67f4a6#git:sha1:4489a975ec6b427a4f816bee8cdea3b747444fdb","text":"Merge retired a covered predecessor; the successor is at .github/workflows/ci.yml."}
