@@ -48,7 +48,7 @@ func GitseqRecord() jsonataddl.Dialect {
 func components() []jsonataddl.Component {
 	return append(jsonataddl.CoreComponents(),
 		jsonataddl.DialectComponent(GitseqRecord()),
-		jsonataddl.Component{Key: "host.canonicalization", Value: "gitseq-record/1"},
+		jsonataddl.Component{Key: "host.canonicalization", Value: "gitseq-record/2"},
 		jsonataddl.Component{Key: "host.orchestration", Value: "one-record-txn/1"},
 		jsonataddl.Component{Key: "host.projection", Value: "gitseq-query-values/1"},
 	)

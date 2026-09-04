@@ -1,9 +1,34 @@
 # Verified record input contract
 
-This is the normative meaning of `host.canonicalization=gitseq-record/1` from
-the adopted design at Gitseq commit
-`860ee61a07aa753dcbc2d50e74da2b7b6547625b`, section 2.3. I3 implements it;
-I4 freezes the produced bytes. I2 defines the contract only.
+This is the normative meaning of `host.canonicalization=gitseq-record/2`.
+It preserves the accepted input bytes specified by the adopted design at
+Gitseq commit `860ee61a07aa753dcbc2d50e74da2b7b6547625b`, section 2.3, and
+corrects its record-admission boundary under inventory request
+`3761e1f40afc1fbe71c2007d8eccb1ea781a376b`. I3 implements it;
+I4 freezes the produced bytes. The I3 adapter has only in-package fixture callers.
+
+Admission precedes envelope construction. Only the exact schema strings
+`stock_received` and `reservation_requested` belong to this application.
+Other schemas advance the frontier within their record transaction without
+decoding the payload or creating decisions or facts, even when their payload
+is malformed, scalar or oversized. This preserves the old interpreter's skip
+behavior; no normalizer runs for those records.
+
+Recognized payloads must fit the 8 KiB ceiling, contain one JSON object, and
+equal the number-preserving `json.Marshal` encoding of that object byte for
+byte. Duplicate keys, extra whitespace, changed key ordering and trailing
+data therefore fail. The object has exactly `id`, `sku` and `qty`: `id` and
+`sku` are non-null TEXT, and `qty` is a positive, exactly representable JSON
+integer, matching both existing inventory event declarations. The core owns
+logical type validation. This closed application policy adds no input keys,
+metadata, DDL syntax or general extension mechanism.
+
+An admitted record must produce exactly one private event. A normalizer that
+emits none causes an interpretation failure; it cannot silently discard a
+recognized record. Any admission or execution failure leaves the interpreted
+frontier before the record and adds no decision, fact or application change.
+The former `/1` host identity has never been activated. This correction changes
+identity to `/2`; it does not rewrite an existing binding.
 
 For both the normalizer and analytic fold, `meta` is the non-null empty object
 `{}`. The normalizer declares no reads, so its `rows` is also `{}`. An
@@ -25,8 +50,8 @@ The normalizer's `event` contains exactly these eight members:
 
 The six TEXT scalars are declared envelope fields. `rests_on` and `payload`
 are deliberately not envelope fields and cannot become scalar read parameters.
-The host must enforce a payload ceiling before decoding as well as the core's
-complete evaluation-input bound. Neither bound changes the signed bytes.
+The host enforces an 8 KiB payload ceiling before decoding as well as the core's
+32 KiB complete evaluation-input bound. Neither bound changes the signed bytes.
 
 The analytic fold's `event` is the private `inventory_event` emitted and
 validated by the core, not the original record envelope. Any required new

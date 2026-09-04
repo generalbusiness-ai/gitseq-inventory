@@ -60,11 +60,12 @@ The Gitseq runtime dependency is pinned to
 `v0.0.0-20260827154243-61439ecd86d3`, the exact reviewed runtime head. No
 database meaning or SQLite state enters the sequencing kernel.
 
-The successor shared-core dialect and runtime identity are defined in
+The successor shared-core dialect, runtime identity and private host adapters and focused A/B/C corpora are defined in
 [`internal/recordruntime`](internal/recordruntime), with its staged delivery
 boundary and limits in the [architecture reference](docs/reference/architecture.md).
-The existing application binding remains active until the host adapters and
-differential corpora pass their separate delivery gates.
+The existing application binding remains active through this combined adapter
+and corpus delivery; I8 owns the migration. Run the [corpus gate](docs/reference/corpora.md)
+from a clean committed checkout with Go 1.26.7, Node and Python 3.12 or later.
 
 ## Demonstrated and still assumed
 
@@ -73,9 +74,10 @@ two equivalent rebuilds, atomic effective and ineffective judgments, exact
 frontier reporting, and refusal of representative writes, PRAGMAs, ambient
 functions, and multiple statements on the application-query connection.
 
-Spike three remains open. This head does not claim the complete JSONata
-reference compatibility and determinism corpus, deterministic evaluator step
-or allocation bounds, settled map-order and numeric edge cases, schema
+The focused corpora cover the published core cases, the existing JSONata
+reference cases, and differential inventory replay. They do not establish
+whole-language compatibility, deterministic evaluator step or allocation
+bounds, all map-order and numeric edge cases, schema
 discovery, a production event-submission API, frontier-wait semantics, or a
 UI. Its only evaluator assumption is that the expressions used by this
 18-line fold retain the behavior exercised by the tests under the pinned Go
