@@ -1,1 +1,1 @@
-{"kind":"artifact","text":"Merge published the current artifact at internal/recordruntime/dialect.go","body":{"commit":"4edd9c98a8db2bb8e6913c73e17e89645f545a8f","path":"internal/recordruntime/dialect.go"}}
+{"kind":"artifact","text":"Merge published the current artifact at internal/recordruntime/dialect_test.go","body":{"commit":"4edd9c98a8db2bb8e6913c73e17e89645f545a8f","path":"internal/recordruntime/dialect_test.go"}}
