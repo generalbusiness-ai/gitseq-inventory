@@ -1,1 +1,1 @@
-{"target":"git:sha1:5abaa0f151cd76dcf02a7bd669358ce94b67f4a6#git:sha1:4dcb77cde17089b1068169277d37bee528084696","text":"Merge retired a covered predecessor; the successor is at internal/recordruntime/testdata/identity.txt."}
+{"target":"git:sha1:5abaa0f151cd76dcf02a7bd669358ce94b67f4a6#git:sha1:5b36d7cb184547799917274231ee7f0ddcd29075","text":"Merge retired a covered predecessor; the successor is at internal/recordruntime/testdata/inventory-reservations.json."}
