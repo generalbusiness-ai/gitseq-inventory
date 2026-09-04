@@ -1,1 +1,1 @@
-{"target":"git:sha1:5abaa0f151cd76dcf02a7bd669358ce94b67f4a6#git:sha1:28c086fa3f0809bb7b8da901b9f2fdf373494c67","text":"Merge retired a covered predecessor; the successor is at internal/recordruntime/testdata/LICENSE.gitseq."}
+{"target":"git:sha1:5abaa0f151cd76dcf02a7bd669358ce94b67f4a6#git:sha1:2c0e05eb3b2f08f3ed3a988d74a949704ba87cce","text":"Merge retired a covered predecessor; the successor is at internal/recordruntime/corpus_test.go."}
