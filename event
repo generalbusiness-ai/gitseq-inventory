@@ -1,1 +1,1 @@
-{"target":"git:sha1:5abaa0f151cd76dcf02a7bd669358ce94b67f4a6#git:sha1:2d03f5a16e2d2bb3450552e5f84384a6c4e7f6e4","text":"Merge retired a covered predecessor; the successor is at docs/reference/input-contract.md."}
+{"target":"git:sha1:5abaa0f151cd76dcf02a7bd669358ce94b67f4a6#git:sha1:3c423ec84f6576d59ea27f0a78decda782b318f5","text":"Merge retired a covered predecessor; the successor is at internal/recordruntime/testdata/inventory-decisions.json."}
