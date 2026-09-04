@@ -1,1 +1,1 @@
-{"target":"git:sha1:5abaa0f151cd76dcf02a7bd669358ce94b67f4a6#git:sha1:61df1e7ea61ad864c76a28b36ae5b706e2cca754","text":"Merge retired a covered predecessor; the successor is at README.md."}
+{"target":"git:sha1:5abaa0f151cd76dcf02a7bd669358ce94b67f4a6#git:sha1:6364ba5ac508e8e955b365c077e92f6bdc4620f1","text":"Merge retired a covered predecessor; the successor is at internal/recordruntime/dialect.go."}
