@@ -1,0 +1,2 @@
+core.grammar=ddl/1; core.interface=jsonata-ddl-application-interface/2026-08-26; core.jsonata=jsonata-go-v206/bounded-2; core.sqlite=sqlite-3.53.4/read-authorizer-1; core.value-codec=logical-values/1; dialect=gitseq-record/1+sha256:bdd1671d4348ee00a7e6f9714d7b36591727a3e8effcfaab99037c50d5a23eb5; host.canonicalization=gitseq-record/1; host.orchestration=one-record-txn/1; host.projection=gitseq-query-values/1
+jsonata-ddl-runtime:sha256:f07be2dbe33393c87919de6868420ee27218245a2d410fc2a81f498b31e620cb

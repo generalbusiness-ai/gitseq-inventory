@@ -2,7 +2,10 @@ module github.com/generalbusiness-ai/gitseq-inventory
 
 go 1.26.7
 
-require github.com/generalbusiness-ai/gitseq v0.0.0-20260827154243-61439ecd86d3
+require (
+	github.com/generalbusiness-ai/gitseq v0.0.0-20260827154243-61439ecd86d3
+	github.com/generalbusiness-ai/tailapps/jsonataddl v0.1.1
+)
 
 require (
 	github.com/fxamacker/cbor/v2 v2.9.3 // indirect

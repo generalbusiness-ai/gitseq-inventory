@@ -60,6 +60,12 @@ The Gitseq runtime dependency is pinned to
 `v0.0.0-20260827154243-61439ecd86d3`, the exact reviewed runtime head. No
 database meaning or SQLite state enters the sequencing kernel.
 
+The successor shared-core dialect and runtime identity are defined in
+[`internal/recordruntime`](internal/recordruntime), with its staged delivery
+boundary and limits in the [architecture reference](docs/reference/architecture.md).
+The existing application binding remains active until the host adapters and
+differential corpora pass their separate delivery gates.
+
 ## Demonstrated and still assumed
 
 The tests demonstrate this exact fold over a verified application-bound log,
