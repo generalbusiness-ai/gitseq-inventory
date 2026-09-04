@@ -1,1 +1,1 @@
-{"kind":"artifact","text":"Merge published the current artifact at scripts/verify-corpora.py","body":{"commit":"c86990f70e7404f3b4ce3b9a1144cc3497d422a9","path":"scripts/verify-corpora.py"}}
+{"target":"git:sha1:5abaa0f151cd76dcf02a7bd669358ce94b67f4a6#git:sha1:012c3f8e1e0eae4b679e9c66fc6a577dceaa9823","text":"Merge retired a covered predecessor; the successor is at internal/recordruntime/testdata/inventory/folds/normalize.jsonata."}
