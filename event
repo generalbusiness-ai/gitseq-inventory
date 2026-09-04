@@ -1,1 +1,1 @@
-{"target":"git:sha1:5abaa0f151cd76dcf02a7bd669358ce94b67f4a6#git:sha1:1228a637e7cb1ceaa2c78dd39a2142292c87a73d","text":"Merge retired a covered predecessor; the successor is at docs/reference/corpora.md."}
+{"target":"git:sha1:5abaa0f151cd76dcf02a7bd669358ce94b67f4a6#git:sha1:12bd8d5960635b89734820fabbd40b21b8d3a150","text":"Merge retired a covered predecessor; the successor is at internal/recordruntime/testdata/input-first-duplicate.json."}
