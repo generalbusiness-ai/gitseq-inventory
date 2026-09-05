@@ -1,1 +1,1 @@
-{"kind":"artifact","text":"Merge published the current artifact at internal/recordruntime/adapters_test.go","body":{"commit":"12c1687b55a04537ffe063ff50aa3238c9db3684","path":"internal/recordruntime/adapters_test.go"}}
+{"kind":"artifact","text":"Merge published the current artifact at internal/recordruntime/admission_test.go","body":{"commit":"12c1687b55a04537ffe063ff50aa3238c9db3684","path":"internal/recordruntime/admission_test.go"}}
