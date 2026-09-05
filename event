@@ -1,1 +1,1 @@
-{"target":"git:sha1:5abaa0f151cd76dcf02a7bd669358ce94b67f4a6#git:sha1:01295b2a4dd89eda9df868290fe32a053fd3d1ba","text":"Merge retired a covered predecessor; the successor is at cmd/inventory-fixture/main_test.go."}
+{"target":"git:sha1:5abaa0f151cd76dcf02a7bd669358ce94b67f4a6#git:sha1:0889549742741e760335a8d7295576c87ef7e31e","text":"Merge retired a covered predecessor; the successor is at internal/recordruntime/adapters_test.go."}
