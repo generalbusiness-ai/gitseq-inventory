@@ -1,1 +1,1 @@
-{"target":"git:sha1:5abaa0f151cd76dcf02a7bd669358ce94b67f4a6#git:sha1:eecc41bf7a3614145f9d8cbcc33a1f3a24733053","text":"Merge retired a covered predecessor; the successor is at folds/normalize.jsonata."}
+{"target":"git:sha1:5abaa0f151cd76dcf02a7bd669358ce94b67f4a6#git:sha1:f0bdc862490e85b36dc96ff4a878ed096b340281","text":"Merge retired a covered predecessor; the successor is at internal/recordruntime/compatibility_test.go."}
