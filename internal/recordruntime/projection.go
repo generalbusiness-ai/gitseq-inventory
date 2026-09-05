@@ -44,6 +44,7 @@ type projection struct {
 	frontier   frontier
 	// Tests inject storage failures at actual transaction boundaries.
 	checkpoint func(string) error
+	afterStep  func(int) // private recovery-test observation after a committed record
 }
 
 func validateHandle(app *jsonataddl.Application) error {
@@ -67,6 +68,12 @@ func validateHandle(app *jsonataddl.Application) error {
 }
 
 func openFixture(ctx context.Context, path string, app *jsonataddl.Application, log host.Log) (*projection, error) {
+	return openFixtureVFS(ctx, path, app, log, "")
+}
+
+// The private VFS seam lets recovery tests observe the actual writer. Public
+// fixture callers always use the default OS VFS.
+func openFixtureVFS(ctx context.Context, path string, app *jsonataddl.Application, log host.Log, writerVFS string) (*projection, error) {
 	if err := validateHandle(app); err != nil {
 		return nil, err
 	}
@@ -118,7 +125,7 @@ func openFixture(ctx context.Context, path string, app *jsonataddl.Application, 
 		}
 	}
 	p := &projection{app: app, guard: &readGuard{}, path: path}
-	p.db, err = openDB(ctx, path, p.guard, false, app)
+	p.db, err = openDBVFS(ctx, path, p.guard, false, app, writerVFS)
 	if err != nil {
 		return nil, err
 	}
@@ -182,8 +189,15 @@ JOIN pragma_table_info(m.name) AS p WHERE m.type='table' AND upper(trim(p.type))
 }
 
 func openDB(ctx context.Context, path string, guard *readGuard, readOnly bool, app *jsonataddl.Application) (*sql.DB, error) {
+	return openDBVFS(ctx, path, guard, readOnly, app, "")
+}
+
+func openDBVFS(ctx context.Context, path string, guard *readGuard, readOnly bool, app *jsonataddl.Application, vfsName string) (*sql.DB, error) {
 	u := url.URL{Scheme: "file", Path: path}
 	q := u.Query()
+	if vfsName != "" {
+		q.Set("vfs", vfsName)
+	}
 	if readOnly {
 		q.Set("mode", "ro")
 		q.Add("_pragma", "query_only(1)")
@@ -433,6 +447,9 @@ func (p *projection) advanceFixture(ctx context.Context, log host.Log) error {
 			}
 			_, persistErr := p.db.ExecContext(ctx, "UPDATE gitseq_frontier SET gap_event=?,gap_reason=? WHERE singleton=1", record.ID, err.Error())
 			return errors.Join(err, persistErr, p.loadFrontier(ctx))
+		}
+		if p.afterStep != nil {
+			p.afterStep(index + 1)
 		}
 	}
 	return p.loadFrontier(ctx)
