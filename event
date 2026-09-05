@@ -1,1 +1,1 @@
-{"kind":"artifact","text":"Merge published the current artifact at internal/recordruntime/testdata/identity.txt","body":{"commit":"9c5d9dffc65090a990debe8e82e6864f85b9dc47","path":"internal/recordruntime/testdata/identity.txt"}}
+{"kind":"artifact","text":"Merge published the current artifact at scripts/verify-corpora.py","body":{"commit":"9c5d9dffc65090a990debe8e82e6864f85b9dc47","path":"scripts/verify-corpora.py"}}
