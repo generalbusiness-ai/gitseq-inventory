@@ -1,0 +1,38 @@
+=== RUN   TestContinuePreservesRowsAndUpdatesQueryPolicy
+--- PASS: TestContinuePreservesRowsAndUpdatesQueryPolicy (0.01s)
+=== RUN   TestLegacyJSONAffinityRefusesContinueAndAutomaticReset
+--- PASS: TestLegacyJSONAffinityRefusesContinueAndAutomaticReset (0.01s)
+=== RUN   TestEachCacheIdentityMismatchDiscardsRows
+=== RUN   TestEachCacheIdentityMismatchDiscardsRows/genesis
+=== RUN   TestEachCacheIdentityMismatchDiscardsRows/application
+=== RUN   TestEachCacheIdentityMismatchDiscardsRows/revision
+=== RUN   TestEachCacheIdentityMismatchDiscardsRows/storage_schema
+--- PASS: TestEachCacheIdentityMismatchDiscardsRows (0.02s)
+    --- PASS: TestEachCacheIdentityMismatchDiscardsRows/genesis (0.01s)
+    --- PASS: TestEachCacheIdentityMismatchDiscardsRows/application (0.01s)
+    --- PASS: TestEachCacheIdentityMismatchDiscardsRows/revision (0.01s)
+    --- PASS: TestEachCacheIdentityMismatchDiscardsRows/storage_schema (0.01s)
+=== RUN   TestRecoverySweep
+=== RUN   TestRecoverySweep/gap=false
+    recovery_test.go:524: verified 504 images; discarded 0 unreadable initialization images; mutations=254 committed=14 init=36 finish=238 backfill=29 resets=2
+=== RUN   TestRecoverySweep/gap=true
+    recovery_test.go:524: verified 138 images; discarded 0 unreadable initialization images; mutations=70 committed=3 init=36 finish=52 backfill=16 resets=1
+--- PASS: TestRecoverySweep (1.23s)
+    --- PASS: TestRecoverySweep/gap=false (0.89s)
+    --- PASS: TestRecoverySweep/gap=true (0.16s)
+=== RUN   TestPreviousRuntimeReopenRefusesUnchanged
+=== RUN   TestPreviousRuntimeReopenRefusesUnchanged/closed
+    runtime_transition_test.go:97: read-only coordination created an empty WAL with zero transaction frames
+    runtime_transition_test.go:97: read-only coordination created volatile SHM
+=== RUN   TestPreviousRuntimeReopenRefusesUnchanged/read-only
+    runtime_transition_test.go:97: read-only coordination created an empty WAL with zero transaction frames
+    runtime_transition_test.go:97: read-only coordination created volatile SHM
+=== RUN   TestPreviousRuntimeReopenRefusesUnchanged/live-wal
+--- PASS: TestPreviousRuntimeReopenRefusesUnchanged (0.01s)
+    --- PASS: TestPreviousRuntimeReopenRefusesUnchanged/closed (0.00s)
+    --- PASS: TestPreviousRuntimeReopenRefusesUnchanged/read-only (0.00s)
+    --- PASS: TestPreviousRuntimeReopenRefusesUnchanged/live-wal (0.00s)
+=== RUN   TestPreviousRuntimeContinueRefusesUnchanged
+--- PASS: TestPreviousRuntimeContinueRefusesUnchanged (0.00s)
+PASS
+ok  	github.com/generalbusiness-ai/gitseq-inventory/internal/recordruntime	1.648s
