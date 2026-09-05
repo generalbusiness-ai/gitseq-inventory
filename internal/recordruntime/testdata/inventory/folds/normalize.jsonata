@@ -1,3 +1,0 @@
-event.schema = "stock_received" or event.schema = "reservation_requested" ?
-{"decision":"effective","facts":[],"tables":{},"events":{"inventory_event":[{"kind":event.schema,"id":event.payload.id,"sku":event.payload.sku,"qty":event.payload.qty}]}} :
-{"decision":"effective","facts":[],"tables":{}}

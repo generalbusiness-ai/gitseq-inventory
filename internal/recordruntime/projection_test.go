@@ -38,7 +38,7 @@ CREATE EXPORT ledger_rows AS SELECT id,qty FROM ledger;`)},
 
 func ledger(t *testing.T) *jsonataddl.Application {
 	t.Helper()
-	app, err := loadSource(ledgerSources(), "adapter-fixture")
+	app, err := LoadSource(ledgerSources(), "adapter-fixture")
 	if err != nil {
 		t.Fatal(err)
 	}

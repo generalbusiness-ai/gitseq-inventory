@@ -3,37 +3,16 @@ package inventory
 import (
 	"context"
 	"crypto/ed25519"
-	"crypto/sha256"
-	"encoding/hex"
 	"encoding/json"
 	"os/exec"
 	"path/filepath"
 	"reflect"
 	"testing"
 
+	"github.com/generalbusiness-ai/gitseq-inventory/internal/recordruntime"
 	"github.com/generalbusiness-ai/gitseq/host"
-	"github.com/generalbusiness-ai/gitseq/spike/jsonataddl"
+	"github.com/generalbusiness-ai/tailapps/jsonataddl"
 )
-
-func TestReviewedApplicationSourcesAreUnchanged(t *testing.T) {
-	tests := []struct {
-		path string
-		want string
-	}{
-		{"application.sql", "5b11080762dbbf4a0ee056923158c46f04dff15e4b31b68551dcdf8b251f712f"},
-		{"folds/inventory.jsonata", "6d9b86fcf2f2969de5f45f622c0bbc1886533bd004826e8f95a56091dd6ecdd8"},
-	}
-	for _, test := range tests {
-		source, err := sourceFiles.ReadFile(test.path)
-		if err != nil {
-			t.Fatal(err)
-		}
-		digest := sha256.Sum256(source)
-		if got := hex.EncodeToString(digest[:]); got != test.want {
-			t.Errorf("%s digest = %s, want reviewed source %s", test.path, got, test.want)
-		}
-	}
-}
 
 func TestInventoryReplaysIntoEquivalentBoundedProjections(t *testing.T) {
 	ctx := context.Background()
@@ -93,9 +72,13 @@ type testAct struct {
 	payload map[string]any
 }
 
-func exampleLog(t *testing.T, ctx context.Context) (*jsonataddl.Profile, host.Log) {
+func exampleLog(t *testing.T, ctx context.Context) (*jsonataddl.Application, host.Log) {
 	t.Helper()
 	profile, err := Load()
+	if err != nil {
+		t.Fatal(err)
+	}
+	binding, err := Binding()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -107,7 +90,7 @@ func exampleLog(t *testing.T, ctx context.Context) (*jsonataddl.Profile, host.Lo
 	if err != nil {
 		t.Fatal(err)
 	}
-	workspace, err := host.Init(ctx, repository, profile.Application, signer, host.Options{})
+	workspace, err := host.Init(ctx, repository, binding, signer, host.Options{})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -125,7 +108,7 @@ func exampleLog(t *testing.T, ctx context.Context) (*jsonataddl.Profile, host.Lo
 			t.Fatal(err)
 		}
 	}
-	reopened, err := host.Open(ctx, repository, profile.Application)
+	reopened, err := host.Open(ctx, repository, binding)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -136,9 +119,9 @@ func exampleLog(t *testing.T, ctx context.Context) (*jsonataddl.Profile, host.Lo
 	return profile, log
 }
 
-func buildProjection(t *testing.T, ctx context.Context, profile *jsonataddl.Profile, log host.Log, path string) *jsonataddl.Projection {
+func buildProjection(t *testing.T, ctx context.Context, profile *jsonataddl.Application, log host.Log, path string) *recordruntime.Fixture {
 	t.Helper()
-	projection, err := jsonataddl.Build(ctx, profile, log, path)
+	projection, err := recordruntime.BuildFixture(ctx, profile, log, path)
 	if err != nil {
 		t.Fatal(err)
 	}

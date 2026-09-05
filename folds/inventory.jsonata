@@ -1,7 +1,7 @@
 (
   $stock := rows.stock_row;
   $available := $stock ? $stock.available : 0;
-  $receiving := meta.event_type = "stock_received";
+  $receiving := event.kind = "stock_received";
   $effective := $receiving or ($stock and $stock.available >= event.qty);
   {
     "decision": $effective ? "effective" : "ineffective",
@@ -11,7 +11,7 @@
         "stock": {"upsert": [{"sku": event.sku, "available": $available + event.qty}]}
       } : {
         "stock": {"upsert": [{"sku": event.sku, "available": $stock.available - event.qty}]},
-        "reservations": {"insert": [event]}
+        "reservations": {"insert": [{"id":event.id,"sku":event.sku,"qty":event.qty}]}
       }
     ) : {}
   }

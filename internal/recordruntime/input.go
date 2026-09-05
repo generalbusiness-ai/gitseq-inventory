@@ -20,9 +20,8 @@ func inventorySchema(schema string) bool {
 	return schema == "stock_received" || schema == "reservation_requested"
 }
 
-// loadSource compiles an immutable inventory handle. No caller outside this
-// package can activate this fixture runtime before the I4/I8 delivery gates.
-func loadSource(files fs.FS, name string) (*jsonataddl.Application, error) {
+// LoadSource compiles an immutable handle without interpreting records or opening storage.
+func LoadSource(files fs.FS, name string) (*jsonataddl.Application, error) {
 	identity, err := Identity()
 	if err != nil {
 		return nil, err

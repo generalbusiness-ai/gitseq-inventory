@@ -88,7 +88,7 @@ func TestCorpusB(t *testing.T) {
 					}
 				}
 			case "order-dependent", "admitted-order-dependent", "environment-dependent":
-				if _, err := loadSource(policySource(test.Expression), "corpus-b"); err == nil {
+				if _, err := LoadSource(policySource(test.Expression), "corpus-b"); err == nil {
 					t.Fatal("core admitted ambient or order-dependent expression")
 				}
 			default:
@@ -99,7 +99,7 @@ func TestCorpusB(t *testing.T) {
 	// These ambient/dynamic forms are named in CORPUS.md outside its cases.
 	for _, expression := range []string{`$millis()`, `$eval("1")`} {
 		t.Run(strings.TrimSuffix(expression, "()"), func(t *testing.T) {
-			if _, err := loadSource(policySource(expression), "corpus-b"); err == nil {
+			if _, err := LoadSource(policySource(expression), "corpus-b"); err == nil {
 				t.Fatal("core admitted ambient or dynamic expression")
 			}
 		})

@@ -33,9 +33,8 @@ type frontier struct {
 	Complete            bool   `json:"complete"`
 }
 
-// projection and every execution entry point are deliberately private. I3
-// has only in-package fixture callers; I8 must establish a fixture admission
-// boundary before any command can use the successor runtime.
+// The mutable runtime stays private. Public fixture callers cannot advance or
+// continue it; they receive only a completed read-only demonstration handle.
 type projection struct {
 	mu         sync.RWMutex
 	path       string
@@ -479,31 +478,32 @@ func queryAuthorizer(app *jsonataddl.Application) jsonataddl.Authorizer {
 	}
 }
 
-type queryResult struct {
+// QueryResult carries bounded rows and the verified/interpreted frontier.
+type QueryResult struct {
 	Frontier  frontier `json:"frontier"`
 	Columns   []string `json:"columns"`
 	Rows      [][]any  `json:"rows"`
 	Truncated bool     `json:"truncated"`
 }
 
-func (p *projection) queryFixture(ctx context.Context, statement string) (queryResult, error) {
+func (p *projection) queryFixture(ctx context.Context, statement string) (QueryResult, error) {
 	p.mu.RLock()
 	defer p.mu.RUnlock()
 	if len(statement) > 4096 || !strings.HasPrefix(strings.ToUpper(strings.TrimSpace(statement)), "SELECT ") || strings.Contains(statement, ";") {
-		return queryResult{}, errors.New("query must be one bounded SELECT")
+		return QueryResult{}, errors.New("query must be one bounded SELECT")
 	}
 	ctx, cancel := context.WithTimeout(ctx, time.Second)
 	defer cancel()
 	rows, err := p.reader.QueryContext(ctx, statement)
 	if err != nil {
-		return queryResult{}, err
+		return QueryResult{}, err
 	}
 	defer rows.Close()
 	columns, err := rows.ColumnTypes()
 	if err != nil {
-		return queryResult{}, err
+		return QueryResult{}, err
 	}
-	result := queryResult{Frontier: p.frontier, Rows: [][]any{}, Columns: []string{}}
+	result := QueryResult{Frontier: p.frontier, Rows: [][]any{}, Columns: []string{}}
 	for _, column := range columns {
 		result.Columns = append(result.Columns, column.Name())
 	}
@@ -515,21 +515,21 @@ func (p *projection) queryFixture(ctx context.Context, statement string) (queryR
 		}
 		values, e := scanRow(rows, len(columns))
 		if e != nil {
-			return queryResult{}, e
+			return QueryResult{}, e
 		}
 		for i, column := range columns {
 			values[i], err = queryValue(values[i], column.DatabaseTypeName())
 			if err != nil {
-				return queryResult{}, err
+				return QueryResult{}, err
 			}
 		}
 		encoded, e := json.Marshal(values)
 		if e != nil {
-			return queryResult{}, e
+			return QueryResult{}, e
 		}
 		bytes += len(encoded)
 		if bytes > 256<<10 {
-			return queryResult{}, errors.New("query result exceeds 256 KiB")
+			return QueryResult{}, errors.New("query result exceeds 256 KiB")
 		}
 		result.Rows = append(result.Rows, values)
 	}

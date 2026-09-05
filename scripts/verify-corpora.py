@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run I4 at one clean head; keep evidence and the old oracle outside this repo."""
+"""Run the application delivery gates at one clean head; keep evidence and the old oracle outside this repo."""
 
 import hashlib
 import io
@@ -65,6 +65,9 @@ def main():
     listing = run("all-modules", "go", "list", "-m", "-f", "{{.Path}}{{if .Replace}} REPLACED{{end}}", "all")
     if "REPLACED" in listing or "github.com/generalbusiness-ai/tailapps" in listing.splitlines():
         raise RuntimeError("replacement or Tailapps root dependency found")
+    dependencies = run("package-dependencies", "go", "list", "-deps", "-test", "./...")
+    if any(p.startswith("github.com/generalbusiness-ai/gitseq/spike/") for p in dependencies.splitlines()):
+        raise RuntimeError("active or test dependency still imports the Gitseq spike")
     download = json.loads(run("download", "go", "mod", "download", "-json", MODULE + "@" + VERSION))
     if download["Sum"] != SUM or download["GoModSum"] != MODSUM:
         raise RuntimeError("immutable module checksum mismatch")
@@ -109,7 +112,11 @@ def main():
     for iteration in (1, 2):
         a = run(f"A-{iteration}", "go", "test", "-mod=readonly", "-count=1", "-json", "-run", "^TestConformanceCorpus(ProjectionCases)?$", MODULE)
         local = run(f"BC-input-{iteration}", "go", "test", "-mod=readonly", "-count=1", "-json", "-run", "^(TestCorpus.*|TestPinnedIdentity|TestEveryComponentChangesIdentity|TestTypedValuesCrossStorageReadAndQuery|TestLegacyJSONAffinityRefusesContinueAndAutomaticReset)$", "./internal/recordruntime", env=oracle_env)
-        results.append({"run": iteration, "A": passed(a, required_a), "BC-input": passed(local, required_local)})
+        application = run(f"application-{iteration}", "go", "test", "-mod=readonly", "-count=1", "-json", "./")
+        required_application = {"TestPublicFixtureBoundary", "TestBindingAndProjectionIdentity",
+                                "TestInventoryReplaysIntoEquivalentBoundedProjections", "TestApplicationQuerySurfaceRemainsReadOnly"}
+        results.append({"run": iteration, "A": passed(a, required_a), "BC-input": passed(local, required_local),
+                        "application": passed(application, required_application)})
         if local.count("live old oracle and candidate match sealed rows") != 4:
             raise RuntimeError("live oracle did not run every comparison")
         print("Corpora A/B/C and input freeze passed, repetition", iteration, flush=True)
@@ -122,7 +129,7 @@ def main():
     archive = subprocess.check_output(["git", "archive", head], cwd=ROOT)
     with tarfile.open(fileobj=io.BytesIO(archive)) as tar:
         tar.extractall(mutant, filter="data")
-    fold = mutant / "internal/recordruntime/testdata/inventory/folds/inventory.jsonata"
+    fold = mutant / "folds/inventory.jsonata"
     original = fold.read_text()
     needle = '"available": $available + event.qty'
     if original.count(needle) != 1:

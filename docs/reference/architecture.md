@@ -6,23 +6,36 @@ JSONata and disposable SQLite projections belong to this application.
 
 ## Current delivery boundary
 
-The public application loader and commands still use the pinned Gitseq spike
-runtime. Their binding remains `jsonata-v206-sqlite-spike@0`.
-`internal/recordruntime` supplies the successor dialect, identity and host
-adapters. Its loader, replay, continuation and query entry points are private,
-with only in-package fixture callers. No command uses them yet.
+The application and commands use shared `jsonataddl v0.1.2` with this
+repository's host adapters. `Binding()` records the composed runtime digest;
+`Load()` compiles the three embedded SQL/JSONata files. `OpenFixture()` verifies
+the binding and signatures through Gitseq's public host before any application
+interpretation. The old spike interpreter is absent from active and test imports.
 
-This implements I2, the I3 adapter boundary and the I4 corpus gate of the adopted design
+Only the documented demonstration can activate a projection: one initial
+binding followed by the exact canonical receipt of five ink units and the two
+reservation requests for two and four units. The three actors must equal the
+binding actor, and their causal lists must be empty. Signed IDs, keys and
+timestamps may vary between generated examples. Count, schema or payload changes
+are refused before evaluation, database opening or cache mutation. There is no
+flag to admit a production log. The returned handle exposes only bounded queries
+and close; replay and continuation remain private.
+
+This completes the application migration described in sections 2 and 5 of
 `notes/2026-09-04-tailapps-jsonataddl-adoption.md` at Gitseq commit
-`860ee61a07aa753dcbc2d50e74da2b7b6547625b`, sections 2.3–2.8 and 5. I8 switches the application only after this combined delivery passes review.
+`860ee61a07aa753dcbc2d50e74da2b7b6547625b`, under the I8 assignment. The source
+uses a read-free normalizer, one private event and one analytic fold. Both base
+tables have exported reads. The fold branches on private `event.kind` and
+explicitly projects reservation columns. The host's recognized-schema and
+payload validation remains in front of normalization.
 
 ## Layers and contracts
 
 | Layer | Owner and boundary |
 |---|---|
 | Verified records and binding (Gitseq layer 4) | `github.com/generalbusiness-ai/gitseq/host`; signed record bytes, ordering and binding selection remain unchanged. |
-| Application interpretation (Gitseq layer 5) | Inventory's internal `recordruntime` owns verified-record conversion, read execution, mutation transactions and disposable projections. The external `jsonataddl` core owns compilation, evaluation, validated results, read plans and logical values. The active interpreter is unchanged. |
-| Application surface (Gitseq layer 6) | Existing fixture and query commands; no successor command, service or production activation in I3. |
+| Application interpretation (Gitseq layer 5) | Inventory's internal `recordruntime` owns verified-record conversion, read execution, mutation transactions and disposable projections. The external `jsonataddl` core owns compilation, evaluation, validated results, read plans and logical values. The fixture binding selects the composed shared-core runtime. |
+| Application surface (Gitseq layer 6) | Fixture generation and bounded query commands; the public entry point mechanically refuses logs outside the closed demonstration. |
 
 The shared core is exactly
 `github.com/generalbusiness-ai/tailapps/jsonataddl v0.1.2`:
@@ -36,8 +49,8 @@ Its two direct dependencies remain `github.com/jsonata-go/jsonata`
 `v0.0.0-20250709164031-599f35f32e5f` and `github.com/ncruces/go-sqlite3`
 `v0.35.3`. The core is Apache-2.0 licensed with LICENSE and NOTICE shipped in
 the module. No upstream core implementation or conformance corpus is copied here, and there is no
-dependency on the Tailapps root module. The old Gitseq spike dependency remains
-until the reviewed application migration.
+dependency on the Tailapps root module. Gitseq remains pinned for its public
+verification host; no compiled or retained test package imports its spike.
 
 Adding the core selects `golang.org/x/text v0.41.0` instead of `v0.40.0` in
 the module graph. It is used by SQLite's dependency tests, not inventory's
@@ -75,9 +88,9 @@ normalizer and exactly one analytic fold.
 
 All eleven values are smaller than the upstream Tailapp dialect's defaults.
 These are source/value bounds, **not deterministic evaluator step or allocation
-bounds**. The successor runtime remains fixture-only until both missing bounds
-exist. A wall-clock timeout is a retryable machine failure, never evidence that
-production interpretation is safe. I3 exposes no public successor replay entry point.
+bounds**. The runtime remains fixture-only until both missing bounds exist. A wall-clock timeout is a retryable machine failure, never evidence that
+production interpretation is safe. The public command admits only the fixed
+demonstration above; the broader signed corpus is interpreted only by tests.
 
 ## Host adapters and storage
 
@@ -166,11 +179,12 @@ Every dependency pin move remains gated by the three corpora even if those
 strings do not move. I4 freezes the actual adapter inputs against the normative
 contract; adapter unit tests do not replace that independent corpus gate.
 
-I8 will place the composed digest in the host binding and projection identity
-after corpus approval. Adapter reuse requires matching genesis, application,
-runtime digest, source revision and storage schema. I3 records this identity
-only in private fixture projections; the binding change remains a separate
-delivery.
+The host binding now selects this composed digest. Projection identity records
+the same digest, source revision, storage schema and export contract. Tests read
+the stored identity and compare it with the binding and compiled handle. Reuse
+requires matching genesis, application, runtime digest, source revision and
+storage schema. The old binding is refused; no command replaces an existing
+log binding or migrates production storage.
 
 ## Version skew from v0.1.1
 
@@ -187,7 +201,8 @@ checks both continuation and reopen without changing the stored bytes.
 The record-admission correction independently changes
 `host.canonicalization` to `gitseq-record/2`. It preserves valid envelope
 bytes while rejecting malformed recognized records before normalization.
-Neither version change activates or rewrites the existing host binding.
+I8 activates the resulting identity for newly generated demonstration logs;
+existing bindings and storage are never migrated automatically.
 
 ## Verification
 
