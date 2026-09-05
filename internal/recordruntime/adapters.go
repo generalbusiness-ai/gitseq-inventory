@@ -26,6 +26,10 @@ func (g *readGuard) check(action sqlite3.AuthorizerActionCode, table, column, sc
 }
 
 func readInput(ctx context.Context, tx *sql.Tx, app *jsonataddl.Application, guard *readGuard, program string, event map[string]any) (jsonataddl.EvaluationInput, error) {
+	input := jsonataddl.EvaluationInput{Meta: map[string]any{}, Event: event, Rows: map[string]any{}}
+	if err := app.ValidateProgramInput(program, input.Meta, input.Event); err != nil {
+		return jsonataddl.EvaluationInput{}, err
+	}
 	plan, ok := app.ReadPlan(program)
 	if !ok {
 		return jsonataddl.EvaluationInput{}, fmt.Errorf("unknown program %q", program)
@@ -36,7 +40,6 @@ func readInput(ctx context.Context, tx *sql.Tx, app *jsonataddl.Application, gua
 	}
 	guard.seated.Store(&authorizer)
 	defer guard.seated.Store(nil)
-	input := jsonataddl.EvaluationInput{Meta: map[string]any{}, Event: event, Rows: map[string]any{}}
 	for _, read := range plan {
 		value, err := executeRead(ctx, tx, read, event)
 		if err != nil {

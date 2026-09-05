@@ -6,7 +6,7 @@ JSONata and disposable SQLite projections belong to this application.
 
 ## Current delivery boundary
 
-The application and commands use shared `jsonataddl v0.1.2` with this
+The application and commands use shared `jsonataddl v0.2.0` with this
 repository's host adapters. `Binding()` records the composed runtime digest;
 `Load()` compiles the three embedded SQL/JSONata files. `OpenFixture()` verifies
 the binding and signatures through Gitseq's public host before any application
@@ -38,10 +38,10 @@ payload validation remains in front of normalization.
 | Application surface (Gitseq layer 6) | Fixture generation and bounded query commands; the public entry point mechanically refuses logs outside the closed demonstration. |
 
 The shared core is exactly
-`github.com/generalbusiness-ai/tailapps/jsonataddl v0.1.2`:
+`github.com/generalbusiness-ai/tailapps/jsonataddl v0.2.0`:
 
 ```text
-Sum: h1:yWVB9oLiPV5pPt3zoPuxUe6nNKx53WIqFWswYOkgOYM=
+Sum: h1:rD0TyYRPHT+DapFEacbd+jLQKHo6I+mi2ufpcCd+eKY=
 GoModSum: h1:fpGrE/1ODSULhyxThhr3TL4JtpfcX3PdA4kJBnKWJRY=
 ```
 
@@ -58,11 +58,14 @@ compiled runtime packages. The two required runtime pins above do not move.
 
 ## Dialect and limits
 
-`GitseqRecord()` returns a fresh `gitseq-record/1` dialect. Sources are
+`GitseqRecord()` returns a fresh `gitseq-record/2` dialect. Sources are
 `application.sql` and `folds/*.jsonata`. The host event is `gitseq_record`;
 the six non-null TEXT envelope fields are `id`, `schema`, `actor`, `position`,
 `timestamp` and `payload_digest`. Causal arrays and decoded payload objects
-are normalizer input, not scalar read parameters.
+are required structured normalizer inputs, not scalar read parameters. The
+complete input contract requires non-null empty metadata, the ordered string
+array `rests_on` and a closed `payload` object with TEXT `id`/`sku` and
+INTEGER `qty`. The existing signed-byte admission remains ahead of evaluation.
 
 Exactly one normalizer consumes host events and emits the sole private event,
 `inventory_event`. At least one analytic fold consumes that event; folds may
@@ -78,6 +81,7 @@ normalizer and exactly one analytic fold.
 | All sources | 64 KiB | Limits aggregate compile input independently of file count. |
 | Each program | 16 KiB | Same ceiling as a source element. |
 | Evaluation input | 32 KiB | Envelope, bounded payload and a small read result. |
+| Input nesting depth | 1024 | Independent encoded-input bound, root depth one. |
 | Evaluation output | 16 KiB | Small event or mutation result. |
 | Evaluator depth | 16 | Shallow record and row expressions. |
 | Range | 64 | Conservative fixed dialect bound; it grants no range syntax. |
@@ -86,7 +90,8 @@ normalizer and exactly one analytic fold.
 | Row changes | 8 | Inventory requires at most two; leaves a small fixed margin. |
 | MANY read rows | 64 | Finite future read ceiling; inventory currently needs one row. |
 
-All eleven values are smaller than the upstream Tailapp dialect's defaults.
+The eleven existing bounds remain unchanged; input nesting adds the separate
+1024-depth limit used by the upstream constructor.
 These are source/value bounds, **not deterministic evaluator step or allocation
 bounds**. The runtime remains fixture-only until both missing bounds exist. A wall-clock timeout is a retryable machine failure, never evidence that
 production interpretation is safe. The public command admits only the fixed
@@ -105,11 +110,13 @@ projection alone validates the original payload. The correction versions the
 host canonicalization component as `/2`, under inventory request
 `3761e1f40afc1fbe71c2007d8eccb1ea781a376b`.
 
-The read adapter binds
-declared event parameters, enforces ONE, OPTIONAL ONE and bounded MANY
+The read adapter validates complete metadata and private-event input through
+`ValidateProgramInput` before it binds declared event parameters, enforces ONE, OPTIONAL ONE and bounded MANY
 cardinalities, and uses the core's logical read values. It seats the core's
 read authorizer only for that read plan and clears it on every return path.
-Host writes occur after the seat is cleared; evaluated programs cannot submit
+Before JSONata runs, the core checks full encoded input and the declared read
+result names, cardinalities, columns and logical values. Empty MANY remains
+`[]`. Host writes occur after the seat is cleared; evaluated programs cannot submit
 SQL or choose undeclared mutation tables.
 
 The mutation adapter applies validated inserts, upserts and deletes in a
@@ -163,7 +170,7 @@ component hashes the complete dialect. The host contributes:
 The composed identity is:
 
 ```text
-jsonata-ddl-runtime:sha256:d506811d6e568fc3e4c0f9773d1d0e12949cf6ab3f6bc891d8a1db7bf0aa90cd
+jsonata-ddl-runtime:sha256:49b8c6adb62aa8cb141bdf126b890d19e519ca72693d369a46b3b95193b4291d
 ```
 
 The full descriptor is pinned in
@@ -186,9 +193,9 @@ requires matching genesis, application, runtime digest, source revision and
 storage schema. The old binding is refused; no command replaces an existing
 log binding or migrates production storage.
 
-## Version skew from v0.1.1
+## Earlier value-codec and admission migrations
 
-The verified v0.1.2 source is `9280be8b9b1d610c41bc6461188fe7ecbb70bf64`.
+The earlier verified v0.1.2 source is `9280be8b9b1d610c41bc6461188fe7ecbb70bf64`.
 `core.grammar=ddl/2` compiles logical JSON columns as `JSON_TEXT`, preserving
 TEXT affinity for scalar numbers as well as objects. Logical exports still
 say JSON. `core.value-codec=logical-values/2` preserves decoded `json.Number`
@@ -203,6 +210,16 @@ The record-admission correction independently changes
 bytes while rejecting malformed recognized records before normalization.
 I8 activates the resulting identity for newly generated demonstration logs;
 existing bindings and storage are never migrated automatically.
+
+## Declared-input adoption
+
+The verified public v0.2.0 source is `8c674fa9ecb4797f7de4322ac97cb3ffe2d21672`.
+It changes `core.interface` to `jsonata-ddl-application-interface/2026-09-05`
+and canonically encodes the whole input declaration. Inventory owns its
+`gitseq-record/2` dialect and digest; it does not copy Tailapp’s dialect or
+host components. Its eight-member input bytes and closed fixture admission
+remain unchanged. The corpus gate explicitly checks the migrated upstream
+corpus and the unchanged native input/record goldens.
 
 ## Verification
 

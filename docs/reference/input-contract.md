@@ -5,7 +5,10 @@ It preserves the accepted input bytes specified by the adopted design at
 Gitseq commit `860ee61a07aa753dcbc2d50e74da2b7b6547625b`, section 2.3, and
 corrects its record-admission boundary under inventory request
 `3761e1f40afc1fbe71c2007d8eccb1ea781a376b`. I3 implements it;
-I4 freezes the produced bytes. I8 uses it behind the closed demonstration admission boundary; broader replay remains confined to in-package tests.
+I4 freezes the produced bytes. I5 declares their complete shape through public
+`jsonataddl v0.2.0`, with Inventory’s owned `gitseq-record/2` dialect.
+I8 uses the same bytes behind the closed demonstration admission boundary;
+broader replay remains confined to in-package tests.
 
 Admission precedes envelope construction. Only the exact schema strings
 `stock_received` and `reservation_requested` belong to this application.
@@ -59,7 +62,17 @@ application data belongs in declared private-event columns, not ambient
 metadata. The fold input still uses the core's logical-value codec.
 
 Changing any source, conversion, encoding or metadata rule changes this host
-component and requires a new binding. The upstream dialect does not bind the
-non-scalar inputs or metadata mechanically. Therefore the I4 freeze must check
-the complete input JSON and each scalar, empty and ordered causal chains, and
-numeric payload preservation at the exactly representable integer bound.
+component and requires a new binding. The dialect mechanically binds the required non-null empty metadata, six
+required TEXT fields, required non-null `rests_on` string array and required
+non-null closed `payload` object with TEXT `id`/`sku` and INTEGER `qty`.
+Optionality and nullability default to refusal; unknown members refuse.
+The host keeps its signed-byte, recognized-schema and positive-quantity rules.
+
+The adapter calls `ValidateProgramInput` before executing reads. The core
+validates the same complete encoded input before evaluation, including exact
+read names, cardinalities, columns and logical values. Empty MANY remains `[]`.
+`MaxInputDepth=1024` counts the evaluation root as depth one and is independent
+of the existing evaluator depth 16. The 32 KiB complete-input bound remains.
+The four I4 byte goldens stay unchanged: complete input JSON, each scalar, empty
+and ordered/duplicate causal chains, and numeric payload at the exact integer
+bound are checked against this declaration, without normalizing historical data.

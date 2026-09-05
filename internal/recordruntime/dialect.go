@@ -10,7 +10,7 @@ import "github.com/generalbusiness-ai/tailapps/jsonataddl"
 // therefore not authorized. See docs/reference/architecture.md.
 func GitseqRecord() jsonataddl.Dialect {
 	return jsonataddl.Dialect{
-		Identity: jsonataddl.DialectIdentity{Name: "gitseq-record", Version: "1"},
+		Identity: jsonataddl.DialectIdentity{Name: "gitseq-record", Version: "2"},
 		Layout: jsonataddl.SourceLayout{
 			DefinitionPath: "application.sql", ProgramRoot: "folds", ProgramSuffix: ".jsonata",
 		},
@@ -22,6 +22,15 @@ func GitseqRecord() jsonataddl.Dialect {
 			jsonataddl.EnvelopeField{Name: "timestamp", Type: "TEXT"},
 			jsonataddl.EnvelopeField{Name: "payload_digest", Type: "TEXT"},
 		),
+		Input: jsonataddl.InputContract{
+			Meta: jsonataddl.NewObjectContract(false),
+			Event: jsonataddl.NewObjectContract(false,
+				jsonataddl.InputField{Name: "rests_on", Kind: jsonataddl.InputStringArray},
+				jsonataddl.InputField{Name: "payload", Kind: jsonataddl.InputScalarObject, Members: []jsonataddl.EnvelopeField{
+					{Name: "id", Type: "TEXT"}, {Name: "sku", Type: "TEXT"}, {Name: "qty", Type: "INTEGER"},
+				}},
+			),
+		},
 		PrivateEvent: jsonataddl.PrivateEventPolicy{Name: "inventory_event", ExactlyOne: true},
 		Topology:     jsonataddl.TopologyPolicy{ExactlyOneNormalizer: true, AtLeastOneFold: true},
 		Authority: jsonataddl.AuthorityPolicy{
@@ -34,6 +43,7 @@ func GitseqRecord() jsonataddl.Dialect {
 			MaxSourceBytes:  64 << 10,
 			MaxProgramBytes: 16 << 10,
 			MaxInputBytes:   32 << 10,
+			MaxInputDepth:   1024,
 			MaxOutputBytes:  16 << 10,
 			MaxDepth:        16,
 			MaxRange:        64,

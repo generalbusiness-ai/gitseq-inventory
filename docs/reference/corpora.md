@@ -10,7 +10,7 @@ gate additionally executes the live old oracle on both repetitions.
 
 ## A: immutable shared-core conformance
 
-The gate verifies `github.com/generalbusiness-ai/tailapps/jsonataddl v0.1.2`
+The gate verifies `github.com/generalbusiness-ai/tailapps/jsonataddl v0.2.0`
 and its exact module sums from [architecture](architecture.md), the unchanged
 JSONata/SQLite pins, no replacements and no Tailapps root module dependency.
 It clears Go bypass variables, disables workspaces, fixes Go 1.26.7 and uses
@@ -27,6 +27,14 @@ go test -mod=readonly -count=1 -json \
 Both suites and every case named by the immutable manifests must explicitly
 pass. Missing tests, skipped tests and a changed corpus are failures. The
 upstream runner and goldens stay in the released module, outside this repository.
+
+This version deliberately migrates upstream corpus A: eight obsolete
+`meta.emission_ordinal` fields were removed, the corpus runtime literal and
+revision/diagnostic goldens were reviewed under the complete input contract,
+and empty MANY results use arrays. The immutable v0.1.2 corpus remains in
+that older release. We run v0.2.0’s own manifests and do not claim A is
+byte-identical across versions. Inventory’s B cases, C signed bundle and
+ordered relation goldens, and all four complete-input byte goldens are unchanged.
 
 ## B: live JSONata reference
 

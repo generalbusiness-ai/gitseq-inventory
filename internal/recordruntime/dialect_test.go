@@ -95,7 +95,10 @@ func TestCoreEnforcesHostPolicy(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			input := jsonataddl.EvaluationInput{Meta: map[string]any{}, Event: map[string]any{}, Rows: map[string]any{}}
+			input, err := recordInput(unitLog(`{"id":"a","qty":1,"sku":"ink"}`).Records[0], 1)
+			if err != nil {
+				t.Fatal(err)
+			}
 			got, err := app.Evaluate("normalize", input)
 			if test.diagnostic == "" {
 				if err != nil || got.Decision != "effective" || len(got.Events["inventory_event"]) != 1 {
