@@ -108,12 +108,12 @@ def main():
     required_local.update("TestCorpusB/" + c["name"].replace(" ", "_") for c in cases)
     required_local.update("TestCorpusC/" + name for name in ("decisions", "facts", "stock", "reservations"))
     required_local.update("TestCorpusInputFreeze/" + name for name in ("empty", "ordered", "bound", "first-duplicate"))
-    input_tests = {"TestDeclaredRecordInput", "TestDeclaredAnalyticInputAndRows", "TestDeclaredOneAndManyRows", "TestInputValidationPrecedesReads", "TestInputDepthBoundIsDeclaredSeparately"}
+    input_tests = {"TestDeclaredRecordInput", "TestDeclaredAnalyticInputAndRows", "TestDeclaredOneAndManyRows", "TestInputValidationPrecedesReads", "TestInputDepthBoundIsDeclaredSeparately", "TestPreviousRuntimeReopenRefusesUnchanged", "TestPreviousRuntimeContinueRefusesUnchanged", "TestForeignHandleRefusesStorage"}
     required_local.update(input_tests)
     results = []
     for iteration in (1, 2):
         a = run(f"A-{iteration}", "go", "test", "-mod=readonly", "-count=1", "-json", "-run", "^TestConformanceCorpus(ProjectionCases)?$", MODULE)
-        local = run(f"BC-input-{iteration}", "go", "test", "-mod=readonly", "-count=1", "-json", "-run", "^(TestCorpus.*|TestPinnedIdentity|TestEveryComponentChangesIdentity|TestTypedValuesCrossStorageReadAndQuery|TestLegacyJSONAffinityRefusesContinueAndAutomaticReset|TestDeclared.*|TestInputValidationPrecedesReads|TestInputDepthBoundIsDeclaredSeparately)$", "./internal/recordruntime", env=oracle_env)
+        local = run(f"BC-input-{iteration}", "go", "test", "-mod=readonly", "-count=1", "-json", "-run", "^(TestCorpus.*|TestPinnedIdentity|TestEveryComponentChangesIdentity|TestTypedValuesCrossStorageReadAndQuery|TestLegacyJSONAffinityRefusesContinueAndAutomaticReset|TestDeclared.*|TestInputValidationPrecedesReads|TestInputDepthBoundIsDeclaredSeparately|TestPreviousRuntime.*|TestForeignHandleRefusesStorage)$", "./internal/recordruntime", env=oracle_env)
         application = run(f"application-{iteration}", "go", "test", "-mod=readonly", "-count=1", "-json", "./")
         required_application = {"TestPublicFixtureBoundary", "TestBindingAndProjectionIdentity",
                                 "TestInventoryReplaysIntoEquivalentBoundedProjections", "TestApplicationQuerySurfaceRemainsReadOnly"}
@@ -165,6 +165,16 @@ def main():
         ("input-depth", "internal/recordruntime/dialect.go",
          "MaxInputDepth:   1024", "MaxInputDepth:   2048",
          "^TestInputDepthBoundIsDeclaredSeparately$", "TestInputDepthBoundIsDeclaredSeparately"),
+        ("stored-runtime-reopen", "internal/recordruntime/projection.go",
+         "err = refuseStoredRuntime(ctx, probe, app.RuntimeProfile())", "err = nil // omit persisted-runtime probe",
+         "^TestPreviousRuntimeReopenRefusesUnchanged$/^live-wal$", "TestPreviousRuntimeReopenRefusesUnchanged/live-wal"),
+        ("stored-runtime-continue", "internal/recordruntime/continue.go",
+         "if err = refuseStoredRuntime(ctx, tx, next.RuntimeProfile()); err != nil {", "if err = nil; err != nil {",
+         "^TestPreviousRuntimeContinueRefusesUnchanged$", "TestPreviousRuntimeContinueRefusesUnchanged"),
+        ("handle-identity", "internal/recordruntime/projection.go",
+         "if app == nil || app.RuntimeProfile() != identity.Digest() || app.Dialect().Canonical() != GitseqRecord().Canonical() {",
+         "if app == nil || false && (app.RuntimeProfile() != identity.Digest() || app.Dialect().Canonical() != GitseqRecord().Canonical()) {",
+         "^TestForeignHandleRefusesStorage$", "TestForeignHandleRefusesStorage/runtime"),
     ]
     omission_results = []
     for label, filename, needle, replacement, pattern, expected_failure in omissions:

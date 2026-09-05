@@ -196,7 +196,7 @@ func TestMalformedPayloadAndConstraintFailure(t *testing.T) {
 }
 
 func TestEachCacheIdentityMismatchDiscardsRows(t *testing.T) {
-	for _, column := range []string{"genesis", "application", "runtime", "revision", "storage_schema"} {
+	for _, column := range []string{"genesis", "application", "revision", "storage_schema"} {
 		t.Run(column, func(t *testing.T) {
 			ctx := context.Background()
 			app := ledger(t)

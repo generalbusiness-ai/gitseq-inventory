@@ -115,6 +115,9 @@ func openFixtureVFS(ctx context.Context, path string, app *jsonataddl.Applicatio
 		err = probe.QueryRowContext(ctx, "PRAGMA application_id").Scan(&id)
 		if err == nil && id == projectionID {
 			err = refuseLegacyJSON(ctx, probe)
+			if err == nil {
+				err = refuseStoredRuntime(ctx, probe, app.RuntimeProfile())
+			}
 		}
 		err = errors.Join(err, probe.Close())
 		if err != nil {
@@ -184,6 +187,21 @@ JOIN pragma_table_info(m.name) AS p WHERE m.type='table' AND upper(trim(p.type))
 	}
 	if count != 0 {
 		return errors.New("legacy JSON-affinity projection requires an explicit discard and verified replay; automatic reset and continuation are refused")
+	}
+	return nil
+}
+
+// Read the physical identity, including committed WAL state. A current
+// compiled handle cannot authorize relabelling rows from another runtime.
+func refuseStoredRuntime(ctx context.Context, db interface {
+	QueryRowContext(context.Context, string, ...any) *sql.Row
+}, expected string) error {
+	var stored string
+	if err := db.QueryRowContext(ctx, "SELECT runtime FROM gitseq_projection_identity WHERE singleton=1").Scan(&stored); err != nil {
+		return err
+	}
+	if stored != expected {
+		return errors.New("stored runtime differs: use a fresh projection and an explicitly authorized binding; automatic reset and continuation are refused")
 	}
 	return nil
 }

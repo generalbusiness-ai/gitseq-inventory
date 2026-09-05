@@ -76,3 +76,21 @@ of the existing evaluator depth 16. The 32 KiB complete-input bound remains.
 The four I4 byte goldens stay unchanged: complete input JSON, each scalar, empty
 and ordered/duplicate causal chains, and numeric payload at the exact integer
 bound are checked against this declaration, without normalizing historical data.
+
+## Existing bindings and projections
+
+The previous input runtime cannot activate this interpreter through an old
+signed binding. Existing projections with a different persisted runtime refuse
+before writer setup or automatic reset, and continuation checks persisted
+runtime inside its transaction even when compiled handles are current. This
+changes `host.orchestration` to `one-record-txn/2`; the canonical input bytes,
+one-record transaction and query-value components remain unchanged. Same-runtime
+cache resets and compatible continuation retain their existing behavior.
+
+Refusal preserves durable database, WAL and journal data, stored identity,
+rows and frontier. The normal read-only SQLite probe reads committed WAL state
+and may leave volatile SHM or a newly created zero-byte WAL. It does not create
+transaction frames, checkpoint, delete sidecars or open an application writer.
+A fresh projection and an explicitly authorized binding are required; this
+source adoption supplies neither production activation nor an automatic
+migration. The public surface remains the closed demonstration.

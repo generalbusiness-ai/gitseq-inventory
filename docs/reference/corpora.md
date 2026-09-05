@@ -112,3 +112,16 @@ The scalar JSON storage/read/query and legacy-affinity continuation/reopen
 tests run beside both corpus repetitions. No test or timeout authorizes
 production replay: the public command admits only the closed demonstration;
 broader runtime entry points remain private to these tests.
+
+## Input and storage omission controls
+
+The gate also runs the native full-input, pre-read, read-result and input-depth
+controls on both repetitions. Disposable archives separately permit null
+metadata/causals, loosen the payload integer type, omit pre-read validation or
+read cardinality checks, and raise the input-depth bound. Each must fail its
+named behavioral assertion. Separate omissions of the persisted-runtime probe
+and continuation guard must expose unsafe reset and relabelling, respectively;
+the live-WAL reopen case cannot be masked by the continuation guard. Candidate
+source and the public module are never modified or replaced by these controls.
+The actual previous binding is refused before database creation or mutation,
+with the signed record log and frontier unchanged.

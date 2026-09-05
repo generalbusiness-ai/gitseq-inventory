@@ -143,13 +143,23 @@ must be regular SQLite files carrying this fixture's application ID. An
 unrelated file is refused without changing its bytes. Legacy JSON-affinity
 columns are also refused before any writer setup, reuse or reset: their scalar
 bytes may already have been coerced. There is no automatic migration.
-Identity mismatch in an
-owned disposable cache resets its schema; replay starts at the beginning.
+Within the same runtime, other identity mismatches in an owned disposable
+cache reset its schema; replay starts at the beginning. A different actual
+stored runtime refuses before writer setup, WAL configuration or reset, even
+when the caller supplies a current compiled handle. It requires a fresh
+projection and an explicitly authorized binding. The read-only SQLite probe
+includes committed WAL state; it never assumes the main file is immutable.
+It preserves existing durable DB/WAL/journal bytes. Normal read coordination
+may create volatile SHM and a zero-byte WAL with no transaction frames, which
+may remain after refusal. This is not a directory or sidecar-byte immutability
+promise; no sidecars are deleted or checkpointed to conceal these effects.
 Matching caches resume only when their interpreted event is still at the same
 position in the supplied verified log.
 
 Explicit continuation requires the same application and runtime plus the
-core's complete writable-table compatibility check. It inspects actual stored
+core's complete writable-table compatibility check. It checks actual persisted
+runtime inside the continuation transaction before any change, so recompiling
+a handle cannot relabel old rows. It also inspects actual stored
 column types inside the transaction and refuses legacy JSON affinity even if
 the old source was recompiled with the new identity. It adds newly declared
 tables, replaces views and indexes, and changes the recorded identity in one
@@ -163,14 +173,15 @@ The five core components come unchanged from `CoreComponents()`. A sixth
 component hashes the complete dialect. The host contributes:
 
 - `host.canonicalization=gitseq-record/2`: the full [input contract](input-contract.md).
-- `host.orchestration=one-record-txn/1`: one verified record per atomic
-  transaction, including application changes, decisions, facts and frontier.
+- `host.orchestration=one-record-txn/2`: one verified record per atomic
+  transaction, including application changes, decisions, facts and frontier;
+  persisted runtime equality is required before writer setup and continuation.
 - `host.projection=gitseq-query-values/1`: the core's logical query values.
 
 The composed identity is:
 
 ```text
-jsonata-ddl-runtime:sha256:49b8c6adb62aa8cb141bdf126b890d19e519ca72693d369a46b3b95193b4291d
+jsonata-ddl-runtime:sha256:a435f1236ab3f8fac08681588c0f8497999508e9cbfef355ef4b4f38fec1d3e2
 ```
 
 The full descriptor is pinned in
@@ -215,7 +226,11 @@ existing bindings and storage are never migrated automatically.
 
 The verified public v0.2.0 source is `8c674fa9ecb4797f7de4322ac97cb3ffe2d21672`.
 It changes `core.interface` to `jsonata-ddl-application-interface/2026-09-05`
-and canonically encodes the whole input declaration. Inventory owns its
+and canonically encodes the whole input declaration. The deliberate
+`one-record-txn/2` change replaces the earlier runtime-mismatch automatic reset
+with persisted-runtime refusal before reopen and inside continuation. All
+other host components and the one-record transaction remain unchanged.
+Inventory owns its
 `gitseq-record/2` dialect and digest; it does not copy Tailapp’s dialect or
 host components. Its eight-member input bytes and closed fixture admission
 remain unchanged. The corpus gate explicitly checks the migrated upstream
