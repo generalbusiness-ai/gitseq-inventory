@@ -1,1 +1,1 @@
-{"target":"git:sha1:5abaa0f151cd76dcf02a7bd669358ce94b67f4a6#git:sha1:d29c8eb9a7d22926d9a02f9ab1bc440c1e2e6452","text":"Merge retired a covered predecessor; the successor is at cmd/inventory-fixture/main.go."}
+{"target":"git:sha1:5abaa0f151cd76dcf02a7bd669358ce94b67f4a6#git:sha1:e0ddb77e82c2414f5e102a28d6c7af5b20449dc3","text":"Merge retired a covered predecessor; the successor is at scripts/verify-corpora.py."}
