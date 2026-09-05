@@ -1,0 +1,4 @@
+Corpus evidence: /var/folders/2x/wylr59t17ds36l1l7ng25y7w0000gn/T/inventory-corpora-kk9t9e1s
+Corpora A/B/C and input freeze passed, repetition 1
+Corpora A/B/C and input freeze passed, repetition 2
+PASS: all corpora twice and wrong-upsert proof at 319c9a08fef247f0bd8e8a784dc52b5af8557f9d
