@@ -1,4 +1,0 @@
-ok  	github.com/generalbusiness-ai/gitseq-inventory	14.924s
-ok  	github.com/generalbusiness-ai/gitseq-inventory/cmd/inventory-fixture	2.320s
-?   	github.com/generalbusiness-ai/gitseq-inventory/cmd/jsonata-inventory	[no test files]
-ok  	github.com/generalbusiness-ai/gitseq-inventory/internal/recordruntime	10.262s
