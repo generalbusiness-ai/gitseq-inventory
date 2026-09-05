@@ -216,3 +216,16 @@ The [corpus gate](corpora.md) runs all three corpora twice at one clean
 committed head and detects a deliberately wrong upsert in a disposable copy.
 Its old oracle builds in an isolated checkout at an immutable source commit;
 no successor test package imports the Gitseq spike.
+
+## Process-death recovery evidence
+
+The [recovery sweep](recovery.md) exercises the current layer-5 adapter and
+shared core using a private recording VFS and an observation after each
+committed record. Layer 4 still supplies verified ordered records; layer 5
+still commits rows, decisions, facts, provenance and the interpreted frontier
+in one host-owned SQLite transaction. Completion remains derived from the
+stored frontier, and gap metadata commits separately after rollback. Layers
+6 and 7 retain bounded completed-fixture reads and closed demonstration
+admission. No public API, runtime identity, dependency pin, authority boundary
+or production activation changes. Incomplete initialization requires explicit
+discard and verified replay; the sweep makes no power-failure guarantee.
