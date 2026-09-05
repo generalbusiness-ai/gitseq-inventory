@@ -1,1 +1,1 @@
-{"target":"git:sha1:5abaa0f151cd76dcf02a7bd669358ce94b67f4a6#git:sha1:e0ddb77e82c2414f5e102a28d6c7af5b20449dc3","text":"Merge retired a covered predecessor; the successor is at scripts/verify-corpora.py."}
+{"target":"git:sha1:5abaa0f151cd76dcf02a7bd669358ce94b67f4a6#git:sha1:e3b71110f7ec53d83274f661124b68621e30ec95","text":"Merge retired a covered predecessor; the successor is at internal/recordruntime/dialect.go."}
