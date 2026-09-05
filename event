@@ -1,1 +1,1 @@
-{"kind":"artifact","text":"Merge published the current artifact at application.sql","body":{"commit":"12c1687b55a04537ffe063ff50aa3238c9db3684","path":"application.sql"}}
+{"kind":"artifact","text":"Merge published the current artifact at application_test.go","body":{"commit":"12c1687b55a04537ffe063ff50aa3238c9db3684","path":"application_test.go"}}
