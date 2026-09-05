@@ -1,5 +1,5 @@
-// jsonata-inventory rebuilds the inventory application's SQLite projection
-// from a verified Gitseq repository and executes one bounded read-only query.
+// jsonata-inventory interprets only the fixed, verified inventory demonstration
+// and executes one bounded read-only query. Production replay is refused.
 package main
 
 import (
@@ -10,34 +10,20 @@ import (
 	"os"
 
 	"github.com/generalbusiness-ai/gitseq-inventory"
-	"github.com/generalbusiness-ai/gitseq/host"
-	"github.com/generalbusiness-ai/gitseq/spike/jsonataddl"
 )
 
 func main() {
 	var repo, database, query string
-	flag.StringVar(&repo, "repo", "", "Git repository bound to the inventory application")
-	flag.StringVar(&database, "database", "", "new path for the disposable SQLite projection")
+	flag.StringVar(&repo, "repo", "", "sealed inventory-fixture demonstration repository (production logs refused)")
+	flag.StringVar(&database, "database", "", "disposable SQLite fixture projection path")
 	flag.StringVar(&query, "sql", "SELECT sku, available FROM stock ORDER BY sku", "read-only SQL query")
 	flag.Parse()
 	if repo == "" || database == "" {
-		fmt.Fprintln(os.Stderr, "usage: jsonata-inventory -repo PATH -database NEW_PATH [-sql SELECT]")
+		fmt.Fprintln(os.Stderr, "usage: jsonata-inventory -repo PATH -database PATH [-sql SELECT]")
 		os.Exit(2)
 	}
 	ctx := context.Background()
-	profile, err := inventory.Load()
-	if err != nil {
-		fail(err)
-	}
-	workspace, err := host.Open(ctx, repo, profile.Application)
-	if err != nil {
-		fail(err)
-	}
-	log, err := workspace.Records(ctx)
-	if err != nil {
-		fail(err)
-	}
-	projection, err := jsonataddl.Build(ctx, profile, log, database)
+	projection, err := inventory.OpenFixture(ctx, repo, database)
 	if err != nil {
 		fail(err)
 	}

@@ -25,11 +25,11 @@ func TestCreateFixtureSealsExampleLog(t *testing.T) {
 		t.Fatalf("sequencer private key remains after sealing: %v", err)
 	}
 
-	profile, err := inventory.Load()
+	binding, err := inventory.Binding()
 	if err != nil {
 		t.Fatal(err)
 	}
-	workspace, err := host.Open(ctx, repository, profile.Application)
+	workspace, err := host.Open(ctx, repository, binding)
 	if err != nil {
 		t.Fatal(err)
 	}

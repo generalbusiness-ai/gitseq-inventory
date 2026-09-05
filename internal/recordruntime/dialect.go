@@ -55,8 +55,7 @@ func components() []jsonataddl.Component {
 }
 
 // Identity composes the five upstream components, the complete dialect and
-// the three host contracts. I2 defines this identity; I8 will activate it only
-// after the adapters and differential corpora have landed.
+// the three host contracts. The fixture binding and projection both record it.
 func Identity() (jsonataddl.RuntimeIdentity, error) {
 	return jsonataddl.ComposeIdentity(components()...)
 }

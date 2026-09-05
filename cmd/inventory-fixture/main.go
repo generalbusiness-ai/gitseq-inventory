@@ -58,11 +58,11 @@ func createFixture(ctx context.Context, repo string) error {
 	if err != nil {
 		return err
 	}
-	profile, err := inventory.Load()
+	binding, err := inventory.Binding()
 	if err != nil {
 		return err
 	}
-	workspace, err := host.Init(ctx, repo, profile.Application, signer, host.Options{})
+	workspace, err := host.Init(ctx, repo, binding, signer, host.Options{})
 	if err != nil {
 		return err
 	}
@@ -79,7 +79,7 @@ func createFixture(ctx context.Context, repo string) error {
 			return err
 		}
 	}
-	reopened, err := host.Open(ctx, repo, profile.Application)
+	reopened, err := host.Open(ctx, repo, binding)
 	if err != nil {
 		return err
 	}

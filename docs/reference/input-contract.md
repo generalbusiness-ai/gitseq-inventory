@@ -5,7 +5,7 @@ It preserves the accepted input bytes specified by the adopted design at
 Gitseq commit `860ee61a07aa753dcbc2d50e74da2b7b6547625b`, section 2.3, and
 corrects its record-admission boundary under inventory request
 `3761e1f40afc1fbe71c2007d8eccb1ea781a376b`. I3 implements it;
-I4 freezes the produced bytes. The I3 adapter has only in-package fixture callers.
+I4 freezes the produced bytes. I8 uses it behind the closed demonstration admission boundary; broader replay remains confined to in-package tests.
 
 Admission precedes envelope construction. Only the exact schema strings
 `stock_received` and `reservation_requested` belong to this application.

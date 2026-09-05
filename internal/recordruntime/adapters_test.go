@@ -27,7 +27,7 @@ func TestContinuePreservesRowsAndUpdatesQueryPolicy(t *testing.T) {
 	}
 	files := ledgerSources()
 	files["application.sql"].Data = []byte(strings.Replace(string(files["application.sql"].Data), "WRITES ledger;", "WRITES ledger, extra;", 1) + "\nCREATE TABLE extra (id TEXT NOT NULL, PRIMARY KEY(id));\nCREATE EXPORT extra_rows AS SELECT id FROM extra;")
-	next, err := loadSource(files, "adapter-fixture")
+	next, err := LoadSource(files, "adapter-fixture")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -65,7 +65,7 @@ func TestContinuePreservesRowsAndUpdatesQueryPolicy(t *testing.T) {
 	}
 	changed := ledgerSources()
 	changed["application.sql"].Data = []byte(strings.Replace(string(changed["application.sql"].Data), "qty INTEGER NOT NULL CHECK(qty >= 0)", "qty REAL NOT NULL CHECK(qty >= 0)", 1))
-	bad, err := loadSource(changed, "adapter-fixture")
+	bad, err := LoadSource(changed, "adapter-fixture")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -166,7 +166,7 @@ func TestTypedValuesCrossStorageReadAndQuery(t *testing.T) {
 			files := ledgerSources()
 			files["application.sql"].Data = []byte(strings.Replace(string(files["application.sql"].Data), "WRITES ledger;", "WRITES ledger, typed;", 1) + `
 CREATE TABLE typed (id TEXT NOT NULL, flag BOOLEAN NOT NULL, document JSON NOT NULL, bytes BLOB NOT NULL, number INTEGER NOT NULL, PRIMARY KEY(id));`)
-			app, err := loadSource(files, "adapter-fixture")
+			app, err := LoadSource(files, "adapter-fixture")
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -237,7 +237,7 @@ func TestLegacyJSONAffinityRefusesContinueAndAutomaticReset(t *testing.T) {
 	files := ledgerSources()
 	files["application.sql"].Data = []byte(strings.Replace(string(files["application.sql"].Data), "WRITES ledger;", "WRITES ledger, typed;", 1) + `
 CREATE TABLE typed (id TEXT NOT NULL, document JSON NOT NULL, PRIMARY KEY(id));`)
-	app, err := loadSource(files, "adapter-fixture")
+	app, err := LoadSource(files, "adapter-fixture")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -272,7 +272,7 @@ CREATE TABLE typed (id TEXT NOT NULL, document JSON NOT NULL, PRIMARY KEY(id));`
 		t.Fatal(err)
 	}
 	for _, name := range []string{"adapter-fixture", "changed-application"} {
-		next, err := loadSource(files, name)
+		next, err := LoadSource(files, name)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -295,7 +295,7 @@ func TestPrimaryKeySpellingAndDeleteProvenance(t *testing.T) {
 	ctx := context.Background()
 	files := ledgerSources()
 	files["application.sql"].Data = []byte(strings.Replace(string(files["application.sql"].Data), "PRIMARY KEY(id)", "PRIMARY KEY(ID)", 1))
-	app, err := loadSource(files, "adapter-fixture")
+	app, err := LoadSource(files, "adapter-fixture")
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -2,8 +2,6 @@ github.com/fxamacker/cbor/v2 v2.9.3 h1:oQBnFATpNdY8gJHTndDDv5Xl4QqNaz51G5LLEPhng
 github.com/fxamacker/cbor/v2 v2.9.3/go.mod h1:vM4b+DJCtHn+zz7h3FFp/hDAI9WNWCsZj23V5ytsSxQ=
 github.com/generalbusiness-ai/gitseq v0.0.0-20260827154243-61439ecd86d3 h1:zDrUGu5plx7G1xDch8/8REJwUmxOgstzk3Hcz1VeJy4=
 github.com/generalbusiness-ai/gitseq v0.0.0-20260827154243-61439ecd86d3/go.mod h1:804vEuIDSCswk18WY/ecc60QB0GocFwM6mVoSfxzlwk=
-github.com/generalbusiness-ai/tailapps/jsonataddl v0.1.1 h1:rzas2PYo0x3n9K6lLo42l3ZLyN16VwHpUjDMtRFZaRg=
-github.com/generalbusiness-ai/tailapps/jsonataddl v0.1.1/go.mod h1:fpGrE/1ODSULhyxThhr3TL4JtpfcX3PdA4kJBnKWJRY=
 github.com/generalbusiness-ai/tailapps/jsonataddl v0.1.2 h1:yWVB9oLiPV5pPt3zoPuxUe6nNKx53WIqFWswYOkgOYM=
 github.com/generalbusiness-ai/tailapps/jsonataddl v0.1.2/go.mod h1:fpGrE/1ODSULhyxThhr3TL4JtpfcX3PdA4kJBnKWJRY=
 github.com/jsonata-go/jsonata v0.0.0-20250709164031-599f35f32e5f h1:JnGon8QHtmjFPq0NcSu8OTEnQDDEgFME7gtj/NkjCUo=

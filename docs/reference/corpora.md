@@ -80,9 +80,11 @@ identity** and **program names**. There is no exclusion for record IDs, absent
 decisions, fact bytes or application state. The current identity is checked
 separately by its nine-component freeze and component-change tests.
 
-The new normalizer/single-fold source is test-only under
-`internal/recordruntime/testdata/inventory`; active root source and binding
-remain unchanged until I8. The two runs must match both sealed oracle rows and
+Corpus C reads the actual root `application.sql`, `folds/normalize.jsonata`
+and `folds/inventory.jsonata`, the same files embedded by `Load()`. There is no
+duplicate fixture application. Each repetition also runs the public application
+binding, replay, query and closed-fixture admission tests. The gate checks
+`go list -deps -test ./...` and refuses any active or retained test spike import. The two runs must match both sealed oracle rows and
 the live historical executable. Finally a disposable archive of the exact head
 subtracts one from each receipt's upsert. C's stock comparison must fail; a
 build error or unrelated failing test does not satisfy this planted-defect gate.
@@ -100,4 +102,5 @@ No golden comes from the old interpreter's differently shaped evaluation input.
 
 The scalar JSON storage/read/query and legacy-affinity continuation/reopen
 tests run beside both corpus repetitions. No test or timeout authorizes
-production replay: the successor entry points remain private and fixture-only.
+production replay: the public command admits only the closed demonstration;
+broader runtime entry points remain private to these tests.

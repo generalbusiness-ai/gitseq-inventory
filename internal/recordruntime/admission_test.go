@@ -86,7 +86,7 @@ func TestAdmissionValidBoundaries(t *testing.T) {
 func TestRecognizedRecordCannotDisappearAtNormalizer(t *testing.T) {
 	files := ledgerSources()
 	files["folds/normalize.jsonata"].Data = []byte(`{"decision":"effective","facts":[],"tables":{}}`)
-	app, err := loadSource(files, "adapter-fixture")
+	app, err := LoadSource(files, "adapter-fixture")
 	if err != nil {
 		t.Fatal(err)
 	}

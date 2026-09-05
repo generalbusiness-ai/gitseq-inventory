@@ -10,6 +10,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"testing"
+	"testing/fstest"
 
 	"github.com/generalbusiness-ai/gitseq/host"
 )
@@ -77,7 +78,15 @@ func sealedCorpus(t *testing.T) (string, host.Log) {
 // immutable old executable over the same bundle on both repetitions.
 func TestCorpusC(t *testing.T) {
 	repo, log := sealedCorpus(t)
-	app, err := loadSource(os.DirFS("testdata/inventory"), "inventory-corpus")
+	sources := fstest.MapFS{}
+	for _, name := range []string{"application.sql", "folds/normalize.jsonata", "folds/inventory.jsonata"} {
+		data, err := os.ReadFile(filepath.Join("../..", name))
+		if err != nil {
+			t.Fatal(err)
+		}
+		sources[name] = &fstest.MapFile{Data: data}
+	}
+	app, err := LoadSource(sources, "gitseq-inventory")
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -1,8 +1,13 @@
 # Gitseq inventory application
 
-This repository is a small, no-UI JSONata-with-DDL application. Signed Gitseq
-events are the source of truth. The command rebuilds a disposable SQLite
-projection from a verified event log and runs one bounded, read-only SQL query.
+This small JSONata-with-DDL application demonstrates signed inventory events,
+a disposable SQLite projection and bounded read-only queries. It uses the
+shared `github.com/generalbusiness-ai/tailapps/jsonataddl v0.1.2` core with
+repository-local Gitseq host adapters.
+
+**The command accepts only the fixed demonstration below.** Production replay
+is refused because deterministic evaluator step and allocation bounds are
+still missing. A timeout does not supply those bounds.
 
 ## Run the complete example
 
@@ -17,70 +22,70 @@ go run ./cmd/jsonata-inventory \
 ```
 
 The fixture writes three signed example events: receive five units of `ink`,
-reserve two, then refuse a reservation for four. The query result reports the
-verified and interpreted frontier and a stock row with three available units.
-The projection command refuses to overwrite an existing database path.
+reserve two, then refuse a reservation for four. The result contains a stock
+row with three available units and the verified and interpreted frontier.
 
-`inventory-fixture` is a sealed demonstration source: it never stores the
-event-signing key and removes the repository's sequencer private key after the
-four-record log is complete. The public verification material remains, but the
-example log cannot later accept more events. This does not stand in for
-production key custody or an event-submission service.
+`inventory-fixture` never stores the event-signing key and removes the
+sequencer private key after the four-record log is complete. Verification
+material remains. The query command verifies the binding and signatures and
+requires those exact three schemas and canonical payloads, empty causal lists
+and the same actor as the binding. Generated keys, IDs and timestamps may vary.
+Any other log is rejected before evaluation or database changes. There is no
+production override flag.
 
-Use `-sql` to select another bounded read-only query:
+Use `-sql` to run another bounded read-only query:
 
 ```sh
 go run ./cmd/jsonata-inventory \
   -repo "$INVENTORY_RUN/events" \
-  -database "$INVENTORY_RUN/reservations.sqlite" \
+  -database "$INVENTORY_RUN/inventory.sqlite" \
   -sql 'SELECT id, sku, qty FROM reservations ORDER BY id'
 ```
 
+A matching disposable cache is reused without adding duplicate decisions.
+An unrelated database or legacy JSON-affinity database is refused without
+migration. An owned cache with a different source identity is rebuilt from the
+admitted fixture. The command does not replace old log bindings.
+
 ## Application boundary
 
-[`application.sql`](application.sql) and
-[`folds/inventory.jsonata`](folds/inventory.jsonata) are carried byte-for-byte
-from Gitseq commit `61439ecd86d34f647ea3b1ac6adf0f072bcff343`.
-The schema uses only `CREATE TABLE`, primary keys, `TEXT`, `INTEGER`, and
-checks. It uses no `ALTER`, trigger, virtual table, attached database, PRAGMA,
-extension loading, money, timestamp, or out-of-range JSON integer convention.
-The two `CREATE EVENT` and `CREATE FOLD` statements are the focused application
-extensions admitted by the reviewed runtime.
+[`application.sql`](application.sql) declares one private inventory event,
+stock and reservation tables, one read-free normalizer, one analytic fold and
+two exported reads. [`normalize.jsonata`](folds/normalize.jsonata) projects the
+validated record payload and schema into that private event.
+[`inventory.jsonata`](folds/inventory.jsonata) applies receipts or reservations
+and explicitly selects the reservation columns. Its stock decisions preserve
+the earlier Gitseq application's behavior, checked against the old executable.
+The original fold and retained reference fixtures carry the [upstream MIT
+terms](internal/recordruntime/testdata/LICENSE.gitseq).
 
-The replay/query driver comes from Gitseq commit
-`ace6ee14ec864179a5a74c6853170d296b3f15c7`. Its replay and query sequence is
-unchanged. The repository integration differs in three explicit ways:
+Gitseq's public `host` remains pinned to
+`v0.0.0-20260827154243-61439ecd86d3` for signature and binding verification.
+No active or test package imports its old spike interpreter. The shared core
+owns compilation, evaluation and logical values; Inventory owns record
+admission, transactions, read authority and projection lifecycle. No database
+meaning enters the sequencing kernel.
 
-- the module is `github.com/generalbusiness-ai/gitseq-inventory`;
-- the application profile loads this repository's embedded SQL and JSONata
-  rather than Gitseq's embedded spike fixture; and
-- the binding identity and source URL name this standalone application.
+The binding selects the composed runtime identity:
 
-The Gitseq runtime dependency is pinned to
-`v0.0.0-20260827154243-61439ecd86d3`, the exact reviewed runtime head. No
-database meaning or SQLite state enters the sequencing kernel.
+```text
+jsonata-ddl-runtime:sha256:d506811d6e568fc3e4c0f9773d1d0e12949cf6ab3f6bc891d8a1db7bf0aa90cd
+```
 
-The successor shared-core dialect, runtime identity and private host adapters and focused A/B/C corpora are defined in
-[`internal/recordruntime`](internal/recordruntime), with its staged delivery
-boundary and limits in the [architecture reference](docs/reference/architecture.md).
-The existing application binding remains active through this combined adapter
-and corpus delivery; I8 owns the migration. Run the [corpus gate](docs/reference/corpora.md)
-from a clean committed checkout with Go 1.26.7, Node and Python 3.12 or later.
+See the [architecture](docs/reference/architecture.md) for exact module sums,
+identity components, storage rules and query limits, and the
+[input contract](docs/reference/input-contract.md) for frozen record bytes.
 
-## Demonstrated and still assumed
+## Verification and limits
 
-The tests demonstrate this exact fold over a verified application-bound log,
-two equivalent rebuilds, atomic effective and ineffective judgments, exact
-frontier reporting, and refusal of representative writes, PRAGMAs, ambient
-functions, and multiple statements on the application-query connection.
+Run `go test ./...` for application, adapter and focused compatibility tests.
+Run `python3 scripts/verify-corpora.py` from a clean committed checkout with
+Go 1.26.7, Node and Python 3.12 or later for the complete [corpus
+gate](docs/reference/corpora.md). It runs the released core corpus, the JSONata
+reference cases and differential inventory replay twice. It also mutates the
+actual receipt upsert in a disposable copy and requires the stock comparison
+to fail. CI requires this gate, full tests, race tests, vet and build.
 
-The focused corpora cover the published core cases, the existing JSONata
-reference cases, and differential inventory replay. They do not establish
-whole-language compatibility, deterministic evaluator step or allocation
-bounds, all map-order and numeric edge cases, schema
-discovery, a production event-submission API, frontier-wait semantics, or a
-UI. Its only evaluator assumption is that the expressions used by this
-18-line fold retain the behavior exercised by the tests under the pinned Go
-JSONata profile. A contrary spike-three result may narrow the SQL or evaluator
-surface and require this application to change; it does not justify adding
-database concepts to the Gitseq kernel.
+These checks cover the reviewed expressions and frozen cases. They do not
+establish whole-language compatibility, deterministic evaluator resource
+bounds, a production submission service, historical query activation or a UI.
