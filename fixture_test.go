@@ -22,7 +22,7 @@ func TestPublicFixtureBoundary(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, variation := range []string{"example", "payload", "schema", "extra", "short", "causal", "actor", "old-binding"} {
+	for _, variation := range []string{"example", "payload", "schema", "extra", "short", "causal", "actor", "old-binding", "previous-input-binding"} {
 		t.Run(variation, func(t *testing.T) {
 			repo := filepath.Join(t.TempDir(), "events")
 			if out, err := exec.Command("git", "init", "-q", repo).CombinedOutput(); err != nil {
@@ -35,6 +35,9 @@ func TestPublicFixtureBoundary(t *testing.T) {
 			selectedBinding := binding
 			if variation == "old-binding" {
 				selectedBinding.FoldVersion = "jsonata-v206-sqlite-spike@0"
+			}
+			if variation == "previous-input-binding" {
+				selectedBinding.FoldVersion = "jsonata-ddl-runtime:sha256:d506811d6e568fc3e4c0f9773d1d0e12949cf6ab3f6bc891d8a1db7bf0aa90cd"
 			}
 			ws, err := host.Init(ctx, repo, selectedBinding, signer, host.Options{})
 			if err != nil {
@@ -77,6 +80,10 @@ func TestPublicFixtureBoundary(t *testing.T) {
 			}
 			path := filepath.Join(t.TempDir(), "projection.sqlite")
 			if variation != "example" {
+				before, err := ws.Records(ctx)
+				if err != nil {
+					t.Fatal(err)
+				}
 				for _, existing := range []bool{false, true} {
 					sentinel := []byte("unrelated database bytes")
 					if existing {
@@ -89,7 +96,7 @@ func TestPublicFixtureBoundary(t *testing.T) {
 						p.Close()
 						t.Fatal("non-fixture accepted")
 					}
-					if variation != "old-binding" && !strings.Contains(err.Error(), "fixture-only runtime") {
+					if !strings.HasSuffix(variation, "binding") && !strings.Contains(err.Error(), "fixture-only runtime") {
 						t.Fatalf("refusal happened after admission: %v", err)
 					}
 					got, readErr := os.ReadFile(path)
@@ -105,6 +112,10 @@ func TestPublicFixtureBoundary(t *testing.T) {
 							t.Fatal("rejection created sidecar")
 						}
 					}
+				}
+				after, err := ws.Records(ctx)
+				if err != nil || !reflect.DeepEqual(before, after) {
+					t.Fatalf("refusal changed signed records/frontier: %v", err)
 				}
 				return
 			}

@@ -11,7 +11,7 @@ import (
 
 // continueFixture is an explicit fixture delivery boundary. It keeps rows
 // only when the core approves the complete writable-table shapes; a changed
-// runtime or application requires openFixture's discard-and-replay path.
+// runtime requires a fresh projection and an explicitly authorized binding.
 func (p *projection) continueFixture(ctx context.Context, next *jsonataddl.Application) (err error) {
 	p.mu.Lock()
 	defer p.mu.Unlock()
@@ -35,6 +35,9 @@ func (p *projection) continueFixture(ctx context.Context, next *jsonataddl.Appli
 		}
 	}()
 	if err = refuseLegacyJSON(ctx, tx); err != nil {
+		return err
+	}
+	if err = refuseStoredRuntime(ctx, tx, next.RuntimeProfile()); err != nil {
 		return err
 	}
 	rows, err := tx.QueryContext(ctx, "SELECT type,name FROM sqlite_master WHERE type IN ('view','index') AND sql IS NOT NULL AND name NOT LIKE 'sqlite_%' ORDER BY type DESC,name")

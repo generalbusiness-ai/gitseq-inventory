@@ -12,10 +12,10 @@ import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
 MODULE = "github.com/generalbusiness-ai/tailapps/jsonataddl"
-VERSION = "v0.1.2"
-UPSTREAM = "9280be8b9b1d610c41bc6461188fe7ecbb70bf64"
+VERSION = "v0.2.0"
+UPSTREAM = "8c674fa9ecb4797f7de4322ac97cb3ffe2d21672"
 OLD = "79e8400888a00a38ccdf96722eebcba2491a9780"
-SUM = "h1:yWVB9oLiPV5pPt3zoPuxUe6nNKx53WIqFWswYOkgOYM="
+SUM = "h1:rD0TyYRPHT+DapFEacbd+jLQKHo6I+mi2ufpcCd+eKY="
 MODSUM = "h1:fpGrE/1ODSULhyxThhr3TL4JtpfcX3PdA4kJBnKWJRY="
 PINS = {
     MODULE: VERSION,
@@ -108,10 +108,12 @@ def main():
     required_local.update("TestCorpusB/" + c["name"].replace(" ", "_") for c in cases)
     required_local.update("TestCorpusC/" + name for name in ("decisions", "facts", "stock", "reservations"))
     required_local.update("TestCorpusInputFreeze/" + name for name in ("empty", "ordered", "bound", "first-duplicate"))
+    input_tests = {"TestDeclaredRecordInput", "TestDeclaredAnalyticInputAndRows", "TestDeclaredOneAndManyRows", "TestInputValidationPrecedesReads", "TestInputDepthBoundIsDeclaredSeparately", "TestPreviousRuntimeReopenRefusesUnchanged", "TestPreviousRuntimeContinueRefusesUnchanged", "TestForeignHandleRefusesStorage"}
+    required_local.update(input_tests)
     results = []
     for iteration in (1, 2):
         a = run(f"A-{iteration}", "go", "test", "-mod=readonly", "-count=1", "-json", "-run", "^TestConformanceCorpus(ProjectionCases)?$", MODULE)
-        local = run(f"BC-input-{iteration}", "go", "test", "-mod=readonly", "-count=1", "-json", "-run", "^(TestCorpus.*|TestPinnedIdentity|TestEveryComponentChangesIdentity|TestTypedValuesCrossStorageReadAndQuery|TestLegacyJSONAffinityRefusesContinueAndAutomaticReset)$", "./internal/recordruntime", env=oracle_env)
+        local = run(f"BC-input-{iteration}", "go", "test", "-mod=readonly", "-count=1", "-json", "-run", "^(TestCorpus.*|TestPinnedIdentity|TestEveryComponentChangesIdentity|TestTypedValuesCrossStorageReadAndQuery|TestLegacyJSONAffinityRefusesContinueAndAutomaticReset|TestDeclared.*|TestInputValidationPrecedesReads|TestInputDepthBoundIsDeclaredSeparately|TestPreviousRuntime.*|TestForeignHandleRefusesStorage)$", "./internal/recordruntime", env=oracle_env)
         application = run(f"application-{iteration}", "go", "test", "-mod=readonly", "-count=1", "-json", "./")
         required_application = {"TestPublicFixtureBoundary", "TestBindingAndProjectionIdentity",
                                 "TestInventoryReplaysIntoEquivalentBoundedProjections", "TestApplicationQuerySurfaceRemainsReadOnly"}
@@ -139,13 +141,65 @@ def main():
     events = [json.loads(line) for line in output.splitlines() if line.startswith("{")]
     if not any(e.get("Action") == "fail" and e.get("Test") == "TestCorpusC/stock" for e in events):
         raise RuntimeError("wrong upsert did not fail the stock comparison")
+    # Each control changes an actual native boundary in an isolated archive.
+    # No candidate or published module replacement is used. Require the named
+    # behavioral test to fail; a compiler error cannot satisfy the gate.
+    omissions = [
+        ("nullable-meta", "internal/recordruntime/dialect.go",
+         "Meta: jsonataddl.NewObjectContract(false)", "Meta: jsonataddl.NewObjectContract(true)",
+         "^TestDeclaredRecordInput$/^missing_meta$", "TestDeclaredRecordInput/missing_meta"),
+        ("nullable-causals", "internal/recordruntime/dialect.go",
+         'Name: "rests_on", Kind: jsonataddl.InputStringArray',
+         'Name: "rests_on", Kind: jsonataddl.InputStringArray, Nullable: true',
+         "^TestDeclaredRecordInput$/^null_rests_on$", "TestDeclaredRecordInput/null_rests_on"),
+        ("payload-integer", "internal/recordruntime/dialect.go",
+         '{Name: "qty", Type: "INTEGER"}', '{Name: "qty", Type: "REAL"}',
+         "^TestDeclaredRecordInput$/^fractional_qty$", "TestDeclaredRecordInput/fractional_qty"),
+        ("pre-read", "internal/recordruntime/adapters.go",
+         "if err := app.ValidateProgramInput(program, input.Meta, input.Event); err != nil {",
+         "if err := app.ValidateProgramInput(program, input.Meta, input.Event); false && err != nil {",
+         "^TestInputValidationPrecedesReads$", "TestInputValidationPrecedesReads"),
+        ("read-cardinality", "internal/recordruntime/adapters.go",
+         "if len(values) == limit {", "if false && len(values) == limit {",
+         "^TestReadCardinalitiesAndEmptyMany$", "TestReadCardinalitiesAndEmptyMany"),
+        ("input-depth", "internal/recordruntime/dialect.go",
+         "MaxInputDepth:   1024", "MaxInputDepth:   2048",
+         "^TestInputDepthBoundIsDeclaredSeparately$", "TestInputDepthBoundIsDeclaredSeparately"),
+        ("stored-runtime-reopen", "internal/recordruntime/projection.go",
+         "err = refuseStoredRuntime(ctx, probe, app.RuntimeProfile())", "err = nil // omit persisted-runtime probe",
+         "^TestPreviousRuntimeReopenRefusesUnchanged$/^live-wal$", "TestPreviousRuntimeReopenRefusesUnchanged/live-wal"),
+        ("stored-runtime-continue", "internal/recordruntime/continue.go",
+         "if err = refuseStoredRuntime(ctx, tx, next.RuntimeProfile()); err != nil {", "if err = nil; err != nil {",
+         "^TestPreviousRuntimeContinueRefusesUnchanged$", "TestPreviousRuntimeContinueRefusesUnchanged"),
+        ("handle-identity", "internal/recordruntime/projection.go",
+         "if app == nil || app.RuntimeProfile() != identity.Digest() || app.Dialect().Canonical() != GitseqRecord().Canonical() {",
+         "if app == nil || false && (app.RuntimeProfile() != identity.Digest() || app.Dialect().Canonical() != GitseqRecord().Canonical()) {",
+         "^TestForeignHandleRefusesStorage$", "TestForeignHandleRefusesStorage/runtime"),
+    ]
+    omission_results = []
+    for label, filename, needle, replacement, pattern, expected_failure in omissions:
+        checkout = EVIDENCE / ("omit-" + label)
+        checkout.mkdir()
+        with tarfile.open(fileobj=io.BytesIO(archive)) as tar:
+            tar.extractall(checkout, filter="data")
+        target = checkout / filename
+        original = target.read_text()
+        if original.count(needle) != 1:
+            raise RuntimeError("omission target changed: " + label)
+        target.write_text(original.replace(needle, replacement))
+        output = run("omit-" + label, "go", "test", "-mod=readonly", "-count=1", "-json", "-run", pattern,
+                     "./internal/recordruntime", cwd=checkout, failure=True)
+        events = [json.loads(line) for line in output.splitlines() if line.startswith("{")]
+        if not any(e.get("Action") == "fail" and e.get("Test") == expected_failure for e in events):
+            raise RuntimeError("omission did not fail its behavioral control: " + label)
+        omission_results.append({"mutation": label, "failed_test": expected_failure})
     run("module-verify", "go", "mod", "verify")
     if run("clean-after", "git", "status", "--porcelain").strip() or run("head-after", "git", "rev-parse", "HEAD").strip() != head:
         raise RuntimeError("candidate changed during the gate")
     summary = {"candidate": head, "module": MODULE, "version": VERSION, "upstream": UPSTREAM,
                "sum": SUM, "go_mod_sum": MODSUM, "pins": PINS, "old_oracle": OLD,
                "corpus_hashes": before, "fixture_hashes": hashes(ROOT / "internal/recordruntime/testdata"),
-               "runs": results, "wrong_upsert": "TestCorpusC/stock failed as required",
+               "runs": results, "wrong_upsert": "TestCorpusC/stock failed as required", "input_omissions": omission_results,
                "exclusions": ["runtime and source identity", "program names"]}
     (EVIDENCE / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
     print("PASS: all corpora twice and wrong-upsert proof at", head, flush=True)

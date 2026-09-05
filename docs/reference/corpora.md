@@ -10,7 +10,7 @@ gate additionally executes the live old oracle on both repetitions.
 
 ## A: immutable shared-core conformance
 
-The gate verifies `github.com/generalbusiness-ai/tailapps/jsonataddl v0.1.2`
+The gate verifies `github.com/generalbusiness-ai/tailapps/jsonataddl v0.2.0`
 and its exact module sums from [architecture](architecture.md), the unchanged
 JSONata/SQLite pins, no replacements and no Tailapps root module dependency.
 It clears Go bypass variables, disables workspaces, fixes Go 1.26.7 and uses
@@ -27,6 +27,14 @@ go test -mod=readonly -count=1 -json \
 Both suites and every case named by the immutable manifests must explicitly
 pass. Missing tests, skipped tests and a changed corpus are failures. The
 upstream runner and goldens stay in the released module, outside this repository.
+
+This version deliberately migrates upstream corpus A: eight obsolete
+`meta.emission_ordinal` fields were removed, the corpus runtime literal and
+revision/diagnostic goldens were reviewed under the complete input contract,
+and empty MANY results use arrays. The immutable v0.1.2 corpus remains in
+that older release. We run v0.2.0’s own manifests and do not claim A is
+byte-identical across versions. Inventory’s B cases, C signed bundle and
+ordered relation goldens, and all four complete-input byte goldens are unchanged.
 
 ## B: live JSONata reference
 
@@ -104,3 +112,16 @@ The scalar JSON storage/read/query and legacy-affinity continuation/reopen
 tests run beside both corpus repetitions. No test or timeout authorizes
 production replay: the public command admits only the closed demonstration;
 broader runtime entry points remain private to these tests.
+
+## Input and storage omission controls
+
+The gate also runs the native full-input, pre-read, read-result and input-depth
+controls on both repetitions. Disposable archives separately permit null
+metadata/causals, loosen the payload integer type, omit pre-read validation or
+read cardinality checks, and raise the input-depth bound. Each must fail its
+named behavioral assertion. Separate omissions of the persisted-runtime probe
+and continuation guard must expose unsafe reset and relabelling, respectively;
+the live-WAL reopen case cannot be masked by the continuation guard. Candidate
+source and the public module are never modified or replaced by these controls.
+The actual previous binding is refused before database creation or mutation,
+with the signed record log and frontier unchanged.
