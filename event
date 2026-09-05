@@ -1,1 +1,1 @@
-{"target":"git:sha1:5abaa0f151cd76dcf02a7bd669358ce94b67f4a6#git:sha1:6b8f260597c9627dd89da456b36823bf42cb7956","text":"Merge retired a covered predecessor; the successor is at internal/recordruntime/input_contract_test.go."}
+{"target":"git:sha1:5abaa0f151cd76dcf02a7bd669358ce94b67f4a6#git:sha1:6d4b814ff97618d868314fb1b09831dff69a39d7","text":"Merge retired a covered predecessor; the successor is at docs/reference/input-contract.md."}
