@@ -1,1 +1,1 @@
-{"target":"git:sha1:5abaa0f151cd76dcf02a7bd669358ce94b67f4a6#git:sha1:6e3ac1df5ffd60b536e44decf6711d6c0fa0ecb6","text":"Merge retired a covered predecessor; the successor is at application_test.go."}
+{"target":"git:sha1:5abaa0f151cd76dcf02a7bd669358ce94b67f4a6#git:sha1:77fc5864b1751edc9071e68991fa0b93c5e488b6","text":"Merge retired a covered predecessor; the successor is at folds/inventory.jsonata."}
