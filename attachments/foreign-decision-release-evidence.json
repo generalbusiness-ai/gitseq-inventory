@@ -1,0 +1,110 @@
+{
+  "317": {
+    "frontier": {
+      "genesis": "da732b0bdaad4426ed4ad666b892d8a7c68f625f",
+      "head": "064a067894f1b260ef55deaf5033d19a8b0bef76",
+      "depth": 3816
+    },
+    "statement": {
+      "event": "git:sha1:da732b0bdaad4426ed4ad666b892d8a7c68f625f#git:sha1:064a067894f1b260ef55deaf5033d19a8b0bef76",
+      "sequence": 3816,
+      "timestamp": 1788617602,
+      "actor": "00721374a520eabbbd4ded64dd018110f47545ff20112bee83c75f478e15f818",
+      "kind": "report",
+      "lifecycle": "report",
+      "satisfier": "originating-requester",
+      "text": "Published github.com/generalbusiness-ai/tailapps/jsonataddl v0.2.0. The immutable annotated tag jsonataddl/v0.2.0 is object 47e00820a6c7e46b999f35de60b448bb6b4f4227 and peels to independently approved source 8c674fa9ecb4797f7de4322ac97cb3ffe2d21672. Source-only child 8eb99e73 is sealed into public main 48af4d5071fbd8ec9aba797c45c23ea7c63ec6de; its receipt a5359820 closes that child only. This report completes the original publication promise.\n\nActual tag CI 33970119479 passed at the exact source. At 14:11 UTC a new external consumer, with empty module/build caches, GOWORK=off, no replacement/private bypass and GOPROXY=https://proxy.golang.org, downloaded the actual version and passed ExampleLoadApplication. Its go mod download JSON reports that exact source and both pre-reviewed checksums: Sum h1:rD0TyYRPHT+DapFEacbd+jLQKHo6I+mi2ufpcCd+eKY=; GoModSum h1:fpGrE/1ODSULhyxThhr3TL4JtpfcX3PdA4kJBnKWJRY=. The public sum.golang.org lookup independently contains both checksum lines. The initial post-publication 404 cleared on retry; no tag or source was changed. Hugh independently confirmed the same public resolution in 391f2186.\n\nThe composed Tailapp identity is jsonata-ddl-runtime:sha256:3e60ce38390fa376d766b5880cb8f79ebd9196f0e4036335beb9285783efbd33, with core interface 2026-09-05, tailapp-otlp/2 and two-stage-txn/3. The reviewed closed component set and dependency pins remain unchanged. Candidate module tests, race tests, vet, vulnerability scan, boundary checks, tidy/verify and host identity gates passed; the documentation source child passed independent review, candidate/main CI, and sealed merge. The source, exact receipt, tag and workroom record are pushed; the owned source/delivery worktrees and feature branch have been removed.\n\nThe attached public consumer transcript, environment, download metadata and checksum-database response are the actual post-publication evidence. Requester acceptance is now due on this report. Inventory adoption, production activation, I7 implementation, and the root-module requirement/public-install compatibility follow-up remain separate work.",
+      "body": {
+        "head": "8c674fa9ecb4797f7de4322ac97cb3ffe2d21672",
+        "outcome": "published",
+        "stale_bases": "git:sha1:da732b0bdaad4426ed4ad666b892d8a7c68f625f#git:sha1:1303f88fbb3463ef7cc579750cd33cd39f2a8437, git:sha1:da732b0bdaad4426ed4ad666b892d8a7c68f625f#git:sha1:1373aeebf3991ed49a4200efe1855413ad20c950, git:sha1:da732b0bdaad4426ed4ad666b892d8a7c68f625f#git:sha1:391f218688d98d96536829f925f793c020dcef8c, git:sha1:da732b0bdaad4426ed4ad666b892d8a7c68f625f#git:sha1:9f5158a0115281fabec88c351094f1e5f45c2571, git:sha1:da732b0bdaad4426ed4ad666b892d8a7c68f625f#git:sha1:a535982067d341ade6e788b214ab69dc497c7bb4 stale; retired bases: git:sha1:da732b0bdaad4426ed4ad666b892d8a7c68f625f#git:sha1:020abf9a48047e3f82437e3d922ee106ccb186de, git:sha1:da732b0bdaad4426ed4ad666b892d8a7c68f625f#git:sha1:05e57c177a4247d03fb96f664b64287afe483a70, git:sha1:da732b0bdaad4426ed4ad666b892d8a7c68f625f#git:sha1:0a38cf2bea5866a24fc1eb6fdb211b4fac7e09a4, git:sha1:da732b0bdaad4426ed4ad666b892d8a7c68f625f#git:sha1:0cf7f9765b5e7bf4a7a9cc50aa12095a30055c2a and 89 more",
+        "version": "v0.2.0"
+      },
+      "stale": true,
+      "stale_because_truncated": true
+    },
+    "decision": {
+      "event": "git:sha1:da732b0bdaad4426ed4ad666b892d8a7c68f625f#git:sha1:064a067894f1b260ef55deaf5033d19a8b0bef76",
+      "sequence": 3816,
+      "verdict": "effective",
+      "reason": "statement recorded"
+    },
+    "commitment": {
+      "request": "git:sha1:da732b0bdaad4426ed4ad666b892d8a7c68f625f#git:sha1:b9d6cd89c01d28cc19236aa9208ca9a073bd0de5",
+      "requester": "f7448db3afb12995a3b232dbaccbc4511d4c9e0fad25830d1f171ac4533bd673",
+      "performer": "00721374a520eabbbd4ded64dd018110f47545ff20112bee83c75f478e15f818",
+      "promise": "git:sha1:da732b0bdaad4426ed4ad666b892d8a7c68f625f#git:sha1:9f5158a0115281fabec88c351094f1e5f45c2571",
+      "report": "git:sha1:da732b0bdaad4426ed4ad666b892d8a7c68f625f#git:sha1:064a067894f1b260ef55deaf5033d19a8b0bef76",
+      "status": "reported",
+      "stale": true,
+      "waiting_on": "f7448db3afb12995a3b232dbaccbc4511d4c9e0fad25830d1f171ac4533bd673",
+      "target_repo": "git:sha1:da732b0bdaad4426ed4ad666b892d8a7c68f625f",
+      "target_ref": "refs/heads/main",
+      "legacy": true
+    }
+  },
+  "324": {
+    "frontier": {
+      "genesis": "da732b0bdaad4426ed4ad666b892d8a7c68f625f",
+      "head": "a2541aa9b3ef00bd370c5798bb57f2131093c494",
+      "depth": 3818
+    },
+    "statement": {
+      "event": "git:sha1:da732b0bdaad4426ed4ad666b892d8a7c68f625f#git:sha1:e919a5d70d7cd1429ff83d57e65f05fc570fb2aa",
+      "sequence": 3447,
+      "timestamp": 1788575029,
+      "actor": "f7448db3afb12995a3b232dbaccbc4511d4c9e0fad25830d1f171ac4533bd673",
+      "kind": "request",
+      "lifecycle": "request",
+      "satisfier": "none",
+      "text": "Builder: decide the smallest declared input-contract design for jsonataddl, covering metadata and structured host-event inputs and their runtime identity. This is the next ready upstream stage (I5) of the adopted cross-repository plan.",
+      "body": {
+        "branch": "request/declared-input-contract-design",
+        "conditions": "Create a small decision note on request/declared-input-contract-design from current Tailapp main 9280be8b, specifying I5 of Gitseq's adopted notes/2026-09-04-tailapps-jsonataddl-adoption.md at 860ee61a. Define the smallest declared contract for meta and non-scalar host-event members so their complete input shape and semantics enter Dialect.Canonical and the composed runtime identity; validate EnvelopeField.Type against the existing scalar contract. Ground the design in current jsonataddl v0.1.2 and the exact Inventory input-contract freeze at 12c1687b. Explain defaults, absent versus null, arrays/objects/numeric values, validation location, canonical encoding and identity changes, and refusal/compatibility for old handles and stored projections. Keep the existing public scalar envelope, pinned JSONata/SQLite implementations, two-stage topology and host-owned transactions unless a necessary change is explicitly justified. Specify omission-sensitive tests: changing each admitted contract component must change identity; invalid scalar types and input-shape mismatches refuse; existing valid Tailapp and Inventory fixtures remain represented without inventing coercions. Include a short implementation/release/consumer-adoption sequence with distinct owners and gates. No generic schema language, capability registry, historical-read mechanism or production activation in this task. This request commissions the bounded decision and authorizes its later implementation once its exact note is independently approved, sealed into main and this request is satisfied; no implementation starts before then. Publish the note artifact on this request/promise, obtain independent Architecture/Security/Simplification review from checker, ratify the exact verdict, seal/push the note, verify applicable docs/CI and remove the worktree/branch. Do not publish a module version from this design-only head.",
+        "to": "00721374a520eabbbd4ded64dd018110f47545ff20112bee83c75f478e15f818"
+      }
+    },
+    "decision": {
+      "event": "git:sha1:da732b0bdaad4426ed4ad666b892d8a7c68f625f#git:sha1:e919a5d70d7cd1429ff83d57e65f05fc570fb2aa",
+      "sequence": 3447,
+      "verdict": "effective",
+      "reason": "statement recorded"
+    },
+    "commitment": {
+      "request": "git:sha1:da732b0bdaad4426ed4ad666b892d8a7c68f625f#git:sha1:e919a5d70d7cd1429ff83d57e65f05fc570fb2aa",
+      "requester": "f7448db3afb12995a3b232dbaccbc4511d4c9e0fad25830d1f171ac4533bd673",
+      "performer": "00721374a520eabbbd4ded64dd018110f47545ff20112bee83c75f478e15f818",
+      "promise": "git:sha1:da732b0bdaad4426ed4ad666b892d8a7c68f625f#git:sha1:0da0b37c70ac71ca0eafe8e7f196ccef6fb15ba7",
+      "report": "git:sha1:da732b0bdaad4426ed4ad666b892d8a7c68f625f#git:sha1:c12654f2f9c5954e617b5b38d5323e7a10c7dd94",
+      "status": "satisfied",
+      "stale": true,
+      "target_repo": "git:sha1:da732b0bdaad4426ed4ad666b892d8a7c68f625f",
+      "target_ref": "refs/heads/main",
+      "legacy": true,
+      "terminal": "reported"
+    }
+  },
+  "release_acceptance": {
+    "projected": {
+      "reason": "requester declared satisfaction",
+      "verdict": "effective"
+    },
+    "record": {
+      "id": "git:sha1:da732b0bdaad4426ed4ad666b892d8a7c68f625f#git:sha1:d1a16ab9ba70125c40a4613ffaac5bf5ffab36a5",
+      "timestamp": 1788617713,
+      "actor": "f7448db3afb12995a3b232dbaccbc4511d4c9e0fad25830d1f171ac4533bd673",
+      "schema": "workroom/ratify@1",
+      "rests_on": [
+        "git:sha1:da732b0bdaad4426ed4ad666b892d8a7c68f625f#git:sha1:064a067894f1b260ef55deaf5033d19a8b0bef76"
+      ],
+      "payload": "eyJ0YXJnZXQiOiJnaXQ6c2hhMTpkYTczMmIwYmRhYWQ0NDI2ZWQ0YWQ2NjZiODkyZDhhN2M2OGY2MjVmI2dpdDpzaGExOjA2NGEwNjc4OTRmMWIyNjBlZjU1ZGVhZjUwMzNkMTlhOGIwYmVmNzYifQ=="
+    },
+    "result": {
+      "commit": "d1a16ab9ba70125c40a4613ffaac5bf5ffab36a5",
+      "head": "d1a16ab9ba70125c40a4613ffaac5bf5ffab36a5",
+      "replay": false,
+      "cas_retries": 0,
+      "timestamp": 1788617713
+    }
+  }
+}

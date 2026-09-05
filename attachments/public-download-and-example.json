@@ -1,0 +1,25 @@
+{
+  "started": "2026-09-05T14:06:57.950599+00:00",
+  "cache": "/var/folders/2x/wylr59t17ds36l1l7ng25y7w0000gn/T/tail-v020-planner-modcache-_af6in3w",
+  "log": "/tmp/tail-v020-planner-public-verification.log",
+  "verifier_exit": 0,
+  "download_exit": 0,
+  "module": {
+    "Path": "github.com/generalbusiness-ai/tailapps/jsonataddl",
+    "Version": "v0.2.0",
+    "Info": "/var/folders/2x/wylr59t17ds36l1l7ng25y7w0000gn/T/tail-v020-planner-modcache-_af6in3w/cache/download/github.com/generalbusiness-ai/tailapps/jsonataddl/@v/v0.2.0.info",
+    "GoMod": "/var/folders/2x/wylr59t17ds36l1l7ng25y7w0000gn/T/tail-v020-planner-modcache-_af6in3w/cache/download/github.com/generalbusiness-ai/tailapps/jsonataddl/@v/v0.2.0.mod",
+    "Zip": "/var/folders/2x/wylr59t17ds36l1l7ng25y7w0000gn/T/tail-v020-planner-modcache-_af6in3w/cache/download/github.com/generalbusiness-ai/tailapps/jsonataddl/@v/v0.2.0.zip",
+    "Dir": "/var/folders/2x/wylr59t17ds36l1l7ng25y7w0000gn/T/tail-v020-planner-modcache-_af6in3w/github.com/generalbusiness-ai/tailapps/jsonataddl@v0.2.0",
+    "Sum": "h1:rD0TyYRPHT+DapFEacbd+jLQKHo6I+mi2ufpcCd+eKY=",
+    "GoModSum": "h1:fpGrE/1ODSULhyxThhr3TL4JtpfcX3PdA4kJBnKWJRY=",
+    "Origin": {
+      "VCS": "git",
+      "URL": "https://github.com/generalbusiness-ai/tailapps",
+      "Subdir": "jsonataddl",
+      "Hash": "8c674fa9ecb4797f7de4322ac97cb3ffe2d21672",
+      "Ref": "refs/tags/jsonataddl/v0.2.0"
+    }
+  },
+  "finished": "2026-09-05T14:07:09.059170+00:00"
+}
