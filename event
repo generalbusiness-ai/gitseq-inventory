@@ -1,1 +1,1 @@
-{"target":"git:sha1:5abaa0f151cd76dcf02a7bd669358ce94b67f4a6#git:sha1:eab70d1f64c2c516cb8ae02840c35ce817a06300","text":"Merge retired a covered predecessor; the successor is at application.sql."}
+{"target":"git:sha1:5abaa0f151cd76dcf02a7bd669358ce94b67f4a6#git:sha1:eb172553e6cf26c168b13507df89d57bbbff22f5","text":"Merge retired a covered predecessor; the successor is at scripts/verify-corpora.py."}
