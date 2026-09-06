@@ -2,7 +2,7 @@
 
 This small JSONata-with-DDL application demonstrates signed inventory events,
 a disposable SQLite projection and bounded read-only queries. It uses the
-shared `github.com/generalbusiness-ai/tailapps/jsonataddl v0.1.2` core with
+shared `github.com/generalbusiness-ai/tailapps/jsonataddl v0.2.0` core with
 repository-local Gitseq host adapters.
 
 **The command accepts only the fixed demonstration below.** Production replay
@@ -44,8 +44,10 @@ go run ./cmd/jsonata-inventory \
 
 A matching disposable cache is reused without adding duplicate decisions.
 An unrelated database or legacy JSON-affinity database is refused without
-migration. An owned cache with a different source identity is rebuilt from the
-admitted fixture. The command does not replace old log bindings.
+migration. Within the same runtime, an owned cache with a different source
+identity is rebuilt from the admitted fixture. A different stored runtime is refused before
+writer setup or reset; use a fresh projection and an explicitly authorized
+binding. The command does not replace old log bindings.
 
 ## Application boundary
 
@@ -66,11 +68,8 @@ owns compilation, evaluation and logical values; Inventory owns record
 admission, transactions, read authority and projection lifecycle. No database
 meaning enters the sequencing kernel.
 
-The binding selects the composed runtime identity:
-
-```text
-jsonata-ddl-runtime:sha256:d506811d6e568fc3e4c0f9773d1d0e12949cf6ab3f6bc891d8a1db7bf0aa90cd
-```
+The binding selects the composed runtime identity pinned in
+[`identity.txt`](internal/recordruntime/testdata/identity.txt).
 
 See the [architecture](docs/reference/architecture.md) for exact module sums,
 identity components, storage rules and query limits, and the
