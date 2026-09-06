@@ -1,0 +1,48 @@
+{
+  "checks": "README/current-reference consistency, all local targets, module agreement, unchanged shell examples, preserved historical runtime refusal",
+  "shell_examples_unchanged": true,
+  "local_links": [
+    {
+      "target": "application.sql",
+      "bytes": 829,
+      "sha256": "9b690381f529079516dbcde180197aa7fa1ceca879d798c3ac877ee738c2450f"
+    },
+    {
+      "target": "folds/normalize.jsonata",
+      "bytes": 365,
+      "sha256": "db426412832db344d4296055b2f32cb1aa90b3af989f414273adc444f53f237b"
+    },
+    {
+      "target": "folds/inventory.jsonata",
+      "bytes": 679,
+      "sha256": "e82f09e8f48304f4ad3142f20a4b488c6f074a17be83e1bab1b0f1bcd9c6db0b"
+    },
+    {
+      "target": "internal/recordruntime/testdata/LICENSE.gitseq",
+      "bytes": 1090,
+      "sha256": "acd70ae8415d9b2ad7fd837af4f411b1a9c3db705bae02908b07c068251c2166"
+    },
+    {
+      "target": "internal/recordruntime/testdata/identity.txt",
+      "bytes": 504,
+      "sha256": "5adb510cd15c20103ae7cdb5bba28687dbee8d794b2861e33227a6e8e19f78a8"
+    },
+    {
+      "target": "docs/reference/architecture.md",
+      "bytes": 15773,
+      "sha256": "e1cfb17d0f069ec74e8bf5b84af70434f60e28d4b3d0b7cafb180d0fa9086974"
+    },
+    {
+      "target": "docs/reference/input-contract.md",
+      "bytes": 6560,
+      "sha256": "5ef38edb571aefc6275c7468e3c3914a1591af6f25671099276b1247de59a18f"
+    },
+    {
+      "target": "docs/reference/corpora.md",
+      "bytes": 7229,
+      "sha256": "a6c29e006301ccbd267ee9176acd74af6fd09c7fa2d58277a79eba8977590c36"
+    }
+  ],
+  "production_source_unchanged": true,
+  "full_corpora_rerun": false
+}
